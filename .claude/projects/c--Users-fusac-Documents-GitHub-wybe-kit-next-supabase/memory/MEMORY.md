@@ -1,0 +1,1 @@
+- [User Role](user_role.md) — Building SaaS starter kit for their company, migrated to full Supabase stack
