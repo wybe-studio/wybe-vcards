@@ -89,12 +89,12 @@ export const ColorPicker = ({
 	// Update color when controlled value changes
 	useEffect(() => {
 		if (value) {
-			const color = Color.rgb(value).rgb().object();
+			const color = Color(value);
 
-			setHue(color.r ?? 0);
-			setSaturation(color.g ?? 0);
-			setLightness(color.b ?? 0);
-			setAlpha(color.a ?? 100);
+			setHue(color.hue());
+			setSaturation(color.saturationl());
+			setLightness(color.lightness());
+			setAlpha(color.alpha() * 100);
 		}
 	}, [value]);
 
