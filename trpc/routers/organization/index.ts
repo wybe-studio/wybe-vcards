@@ -32,20 +32,31 @@ async function generateOrganizationSlug(
 	});
 
 	let slug = baseSlug;
-	let hasAvailableSlug = false;
 
-	for (let i = 0; i < 3; i++) {
-		slug = `${baseSlug}-${nanoid(5)}`;
+	// Try with clean name first
+	const { data: existingBase } = await supabase
+		.from("organization")
+		.select("id")
+		.eq("slug", baseSlug)
+		.maybeSingle();
 
-		const { data: existing } = await supabase
-			.from("organization")
-			.select("id")
-			.eq("slug", slug)
-			.maybeSingle();
+	let hasAvailableSlug = !existingBase;
 
-		if (!existing) {
-			hasAvailableSlug = true;
-			break;
+	// If taken, add random suffix
+	if (!hasAvailableSlug) {
+		for (let i = 0; i < 3; i++) {
+			slug = `${baseSlug}-${nanoid(5)}`;
+
+			const { data: existing } = await supabase
+				.from("organization")
+				.select("id")
+				.eq("slug", slug)
+				.maybeSingle();
+
+			if (!existing) {
+				hasAvailableSlug = true;
+				break;
+			}
 		}
 	}
 
