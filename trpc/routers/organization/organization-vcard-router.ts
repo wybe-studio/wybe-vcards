@@ -11,6 +11,97 @@ import {
 import { createTRPCRouter, protectedOrganizationProcedure } from "@/trpc/init";
 
 export const organizationVcardRouter = createTRPCRouter({
+	stats: protectedOrganizationProcedure.query(async ({ ctx }) => {
+		const orgId = ctx.organization.id;
+
+		// vCard counts by status
+		const [activeRes, suspendedRes, archivedRes] = await Promise.all([
+			ctx.supabase
+				.from("vcard")
+				.select("*", { count: "exact", head: true })
+				.eq("organization_id", orgId)
+				.eq("status", "active"),
+			ctx.supabase
+				.from("vcard")
+				.select("*", { count: "exact", head: true })
+				.eq("organization_id", orgId)
+				.eq("status", "suspended"),
+			ctx.supabase
+				.from("vcard")
+				.select("*", { count: "exact", head: true })
+				.eq("organization_id", orgId)
+				.eq("status", "archived"),
+		]);
+
+		// Physical card counts by status (admin+ only)
+		const isAdmin = ctx.membership.role !== "member";
+		let physicalCards = { free: 0, assigned: 0, disabled: 0 };
+
+		if (isAdmin) {
+			const [freeRes, assignedRes, disabledRes] = await Promise.all([
+				ctx.supabase
+					.from("physical_card")
+					.select("*", { count: "exact", head: true })
+					.eq("organization_id", orgId)
+					.eq("status", "free"),
+				ctx.supabase
+					.from("physical_card")
+					.select("*", { count: "exact", head: true })
+					.eq("organization_id", orgId)
+					.eq("status", "assigned"),
+				ctx.supabase
+					.from("physical_card")
+					.select("*", { count: "exact", head: true })
+					.eq("organization_id", orgId)
+					.eq("status", "disabled"),
+			]);
+
+			physicalCards = {
+				free: freeRes.count ?? 0,
+				assigned: assignedRes.count ?? 0,
+				disabled: disabledRes.count ?? 0,
+			};
+		}
+
+		// Member count
+		const { count: membersCount } = await ctx.supabase
+			.from("member")
+			.select("*", { count: "exact", head: true })
+			.eq("organization_id", orgId);
+
+		// Recent vCards (last 5)
+		const { data: recentVcards } = await ctx.supabase
+			.from("vcard")
+			.select("id, first_name, last_name, job_title, status, created_at, slug")
+			.eq("organization_id", orgId)
+			.order("created_at", { ascending: false })
+			.limit(5);
+
+		const maxVcards =
+			(ctx.organization as { max_vcards?: number }).max_vcards ?? 10;
+		const maxPhysicalCards =
+			(ctx.organization as { max_physical_cards?: number })
+				.max_physical_cards ?? 0;
+
+		return {
+			vcards: {
+				active: activeRes.count ?? 0,
+				suspended: suspendedRes.count ?? 0,
+				archived: archivedRes.count ?? 0,
+				total:
+					(activeRes.count ?? 0) +
+					(suspendedRes.count ?? 0) +
+					(archivedRes.count ?? 0),
+				max: maxVcards,
+			},
+			physicalCards,
+			members: membersCount ?? 0,
+			recentVcards: recentVcards ?? [],
+			isAdmin,
+			maxPhysicalCards,
+		};
+	}),
+
 	list: protectedOrganizationProcedure
 		.input(listVcardsSchema)
 		.query(async ({ ctx, input }) => {

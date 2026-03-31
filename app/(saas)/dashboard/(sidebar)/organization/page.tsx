@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import type * as React from "react";
-import { DashboardDemo } from "@/components/dashboard/dashboard-demo";
+import { OrganizationDashboard } from "@/components/organization/organization-dashboard";
 import {
 	Page,
 	PageBody,
@@ -13,14 +13,9 @@ import {
 import { getOrganizationById, getSession } from "@/lib/auth/server";
 
 export const metadata: Metadata = {
-	title: "Dashboard",
+	title: "Pannello",
 };
 
-/**
- * Organization dashboard page.
- * The active organization is obtained from the session by the layout,
- * and TRPC procedures use protectedOrganizationProcedure which validates it.
- */
 export default async function DashboardPage(): Promise<React.JSX.Element> {
 	const session = await getSession();
 	if (!session?.session.activeOrganizationId) {
@@ -53,7 +48,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
 						<div>
 							<PageTitle>Pannello</PageTitle>
 						</div>
-						<DashboardDemo />
+						<OrganizationDashboard />
 					</div>
 				</div>
 			</PageBody>
