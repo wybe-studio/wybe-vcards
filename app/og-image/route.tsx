@@ -1,7 +1,10 @@
 import { ImageResponse } from "next/og";
-import { appConfig } from "@/config/app.config";
 
 export const runtime = "edge";
+
+const APP_NAME = "Wybe vCards";
+const APP_DESCRIPTION =
+	"Crea, gestisci e condividi biglietti da visita digitali NFC per la tua organizzazione";
 
 function OgImage(): React.JSX.Element {
 	return (
@@ -72,7 +75,7 @@ function OgImage(): React.JSX.Element {
 							textShadow: "0 4px 8px rgba(0, 0, 0, 0.5)",
 						}}
 					>
-						{appConfig.appName}
+						{APP_NAME}
 					</div>
 				</div>
 
@@ -85,7 +88,7 @@ function OgImage(): React.JSX.Element {
 						color: "rgba(255, 255, 255, 0.75)",
 					}}
 				>
-					{appConfig.description}
+					{APP_DESCRIPTION}
 				</div>
 			</div>
 			{[
