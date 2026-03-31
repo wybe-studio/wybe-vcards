@@ -11,6 +11,7 @@ import {
 	UnlinkIcon,
 } from "lucide-react";
 import * as React from "react";
+import { toast } from "sonner";
 import { AdminAssignCardModal } from "@/components/admin/organizations/admin-assign-card-modal";
 import { GenerateCardsModal } from "@/components/admin/organizations/generate-cards-modal";
 import { ConfirmationModal } from "@/components/confirmation-modal";
@@ -67,25 +68,37 @@ export function OrgPhysicalCardsTab({
 
 	const unassignMutation = trpc.admin.physicalCard.unassign.useMutation({
 		onSuccess: () => {
+			toast.success("Card scollegata");
 			utils.admin.physicalCard.listOrgPhysicalCards.invalidate({
 				organizationId,
 			});
+		},
+		onError: (error) => {
+			toast.error(error.message);
 		},
 	});
 
 	const disableMutation = trpc.admin.physicalCard.disable.useMutation({
 		onSuccess: () => {
+			toast.success("Card disattivata");
 			utils.admin.physicalCard.listOrgPhysicalCards.invalidate({
 				organizationId,
 			});
+		},
+		onError: (error) => {
+			toast.error(error.message);
 		},
 	});
 
 	const enableMutation = trpc.admin.physicalCard.enable.useMutation({
 		onSuccess: () => {
+			toast.success("Card riattivata");
 			utils.admin.physicalCard.listOrgPhysicalCards.invalidate({
 				organizationId,
 			});
+		},
+		onError: (error) => {
+			toast.error(error.message);
 		},
 	});
 

@@ -11,6 +11,7 @@ import {
 	Trash2Icon,
 } from "lucide-react";
 import * as React from "react";
+import { toast } from "sonner";
 import { AdminEditVcardModal } from "@/components/admin/organizations/admin-edit-vcard-modal";
 import { ConfirmationModal } from "@/components/confirmation-modal";
 import { VcardStatusBadge } from "@/components/organization/vcard-status-badge";
@@ -61,13 +62,21 @@ export function OrgVcardsTab({
 
 	const updateMutation = trpc.admin.vcard.update.useMutation({
 		onSuccess: () => {
+			toast.success("vCard aggiornata");
 			utils.admin.physicalCard.listOrgVcards.invalidate({ organizationId });
+		},
+		onError: (error) => {
+			toast.error(error.message);
 		},
 	});
 
 	const deleteMutation = trpc.admin.vcard.delete.useMutation({
 		onSuccess: () => {
+			toast.success("vCard eliminata");
 			utils.admin.physicalCard.listOrgVcards.invalidate({ organizationId });
+		},
+		onError: (error) => {
+			toast.error(error.message);
 		},
 	});
 

@@ -46,7 +46,8 @@ function canBypassOnboarding(pathname: string): boolean {
 	return (
 		pathname === "/dashboard/onboarding" ||
 		pathname.startsWith("/dashboard/choose-plan") ||
-		pathname.startsWith("/dashboard/organization-invitation")
+		pathname.startsWith("/dashboard/organization-invitation") ||
+		pathname.startsWith("/dashboard/account/setup-2fa")
 	);
 }
 
