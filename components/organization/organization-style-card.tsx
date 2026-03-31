@@ -24,6 +24,7 @@ import {
 import {
 	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -298,6 +299,10 @@ export function OrganizationStyleCard(): React.JSX.Element {
 											</SelectItem>
 										</SelectContent>
 									</Select>
+									<FormDescription>
+										Si applica solo alle nuove vCard. Quelle esistenti
+										mantengono il loro URL attuale, modificabile singolarmente.
+									</FormDescription>
 									<FormMessage />
 								</FormItem>
 							)}
