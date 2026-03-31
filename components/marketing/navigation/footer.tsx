@@ -23,9 +23,16 @@ const footerLinks = [
 	{
 		group: "Legale",
 		items: [
-			{ title: "Privacy policy", href: "/legal/privacy" },
-			{ title: "Termini di servizio", href: "/legal/terms" },
-			{ title: "Cookie policy", href: "/legal/cookies" },
+			{
+				title: "Privacy policy",
+				href: "https://www.iubenda.com/privacy-policy/56636117",
+				external: true,
+			},
+			{
+				title: "Cookie policy",
+				href: "https://www.iubenda.com/privacy-policy/56636117/cookie-policy",
+				external: true,
+			},
 		],
 	},
 ];
@@ -64,6 +71,12 @@ export function Footer() {
 												<Link
 													href={item.href}
 													className="text-marketing-fg-muted hover:text-marketing-fg transition-colors duration-200"
+													{...("external" in item && item.external
+														? {
+																target: "_blank",
+																rel: "noopener noreferrer",
+															}
+														: {})}
 												>
 													{item.title}
 												</Link>
@@ -78,8 +91,7 @@ export function Footer() {
 					{/* Bottom Section */}
 					<div className="flex flex-col items-center justify-between gap-8 border-t border-marketing-border pt-8 sm:flex-row text-sm">
 						<div className="text-marketing-fg-muted">
-							© {new Date().getFullYear()} {appConfig.appName}. Tutti i diritti
-							riservati.
+							© {new Date().getFullYear()} Wybe srls — P.IVA IT01178880579
 						</div>
 					</div>
 				</div>

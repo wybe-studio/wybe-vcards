@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import Link from "next/link";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 
@@ -53,12 +52,14 @@ export function CookieBanner(): React.JSX.Element {
 							Utilizziamo i cookie principalmente per analisi e per migliorare
 							la tua esperienza. Accettando, acconsenti al nostro utilizzo dei
 							cookie.{" "}
-							<Link
-								href="/legal/cookies"
+							<a
+								href="https://www.iubenda.com/privacy-policy/56636117/cookie-policy"
+								target="_blank"
+								rel="noopener noreferrer"
 								className="underline hover:text-primary"
 							>
 								Scopri di più
-							</Link>
+							</a>
 						</p>
 						<div className="flex flex-row gap-2">
 							<Button

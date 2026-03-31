@@ -49,8 +49,8 @@ export const metadata: Metadata = {
 		apple: "/apple-touch-icon.png",
 	},
 	robots: {
-		index: true,
-		follow: true,
+		index: false,
+		follow: false,
 	},
 };
 
