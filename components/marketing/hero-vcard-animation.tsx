@@ -1,6 +1,7 @@
 "use client";
 
 import { Linkedin, Mail, Nfc, Smartphone, UserPlus } from "lucide-react";
+import { motion, useAnimation } from "motion/react";
 
 // -- Static mini vCard (fake data) --------------------------------------------------
 
@@ -102,8 +103,59 @@ function MiniContactRow({
 // -- Smartphone + NFC card frame ----------------------------------------------------
 
 export function HeroVcardAnimation() {
+	const nfcControls = useAnimation();
+	const screenControls = useAnimation();
+	const rippleControls = useAnimation();
+
+	async function playSequence() {
+		// Phase 1: NFC card moves toward phone (tap)
+		await nfcControls.start({
+			x: -30,
+			y: 60,
+			rotateX: 10,
+			rotateY: -5,
+			scale: 0.95,
+			boxShadow:
+				"0 4px 8px -2px rgba(0,0,0,0.15), 0 2px 4px -1px rgba(0,0,0,0.08)",
+			transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+		});
+
+		// Phase 2: Contact ripple
+		rippleControls.start({
+			scale: [0, 2.5],
+			opacity: [0.5, 0],
+			transition: { duration: 0.6, ease: "easeOut" },
+		});
+
+		// Phase 3: Reveal vCard on screen
+		screenControls.start({
+			opacity: 1,
+			y: 0,
+			transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+		});
+
+		// Phase 4: NFC card returns
+		await nfcControls.start({
+			x: 0,
+			y: 0,
+			rotateX: 0,
+			rotateY: 0,
+			scale: 1,
+			boxShadow:
+				"0 20px 40px -8px rgba(0,0,0,0.2), 0 8px 16px -4px rgba(0,0,0,0.1)",
+			transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 },
+		});
+	}
+
 	return (
-		<div className="relative flex items-center justify-center py-8">
+		<motion.div
+			className="relative flex items-center justify-center py-8"
+			onViewportEnter={() => {
+				// Small delay so the user sees the initial state
+				setTimeout(playSequence, 400);
+			}}
+			viewport={{ once: true, amount: 0.5 }}
+		>
 			{/* Scene container with perspective */}
 			<div className="relative perspective-midrange">
 				{/* Smartphone */}
@@ -113,18 +165,36 @@ export function HeroVcardAnimation() {
 
 					{/* Screen area */}
 					<div className="absolute inset-[6px] overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-800 to-slate-900">
-						{/* vCard content — initially hidden, revealed by animation */}
-						<div className="h-full w-full opacity-0">
+						{/* Ripple effect */}
+						<motion.div
+							className="pointer-events-none absolute left-1/2 top-1/4 z-30 size-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/30"
+							initial={{ scale: 0, opacity: 0 }}
+							animate={rippleControls}
+						/>
+
+						{/* vCard content */}
+						<motion.div
+							className="h-full w-full"
+							initial={{ opacity: 0, y: 20 }}
+							animate={screenControls}
+						>
 							<MiniVcard />
-						</div>
+						</motion.div>
 					</div>
 				</div>
 
 				{/* NFC Card */}
-				<div className="absolute -right-8 -top-4 z-10 flex h-[65px] w-[100px] items-center justify-center rounded-xl border border-neutral-100 bg-white shadow-[0_20px_40px_-8px_rgba(0,0,0,0.2),0_8px_16px_-4px_rgba(0,0,0,0.1)]">
+				<motion.div
+					className="absolute -right-8 -top-4 z-10 flex h-[65px] w-[100px] items-center justify-center rounded-xl border border-neutral-100 bg-white"
+					style={{
+						boxShadow:
+							"0 20px 40px -8px rgba(0,0,0,0.2), 0 8px 16px -4px rgba(0,0,0,0.1)",
+					}}
+					animate={nfcControls}
+				>
 					<Nfc className="size-7 text-neutral-400" />
-				</div>
+				</motion.div>
 			</div>
-		</div>
+		</motion.div>
 	);
 }
