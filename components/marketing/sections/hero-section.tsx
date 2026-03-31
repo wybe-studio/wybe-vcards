@@ -3,6 +3,7 @@
 import { ArrowRightIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { HeroVcardAnimation } from "../hero-vcard-animation";
 
 export function HeroSection() {
 	return (
@@ -74,6 +75,7 @@ export function HeroSection() {
 								<ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
 							</Link>
 						</div>
+						<HeroVcardAnimation />
 					</div>
 				</div>
 			</div>
