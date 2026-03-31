@@ -2,6 +2,7 @@
 
 import NiceModal, { type NiceModalHocProps } from "@ebay/nice-modal-react";
 import { toast } from "sonner";
+import { VcardImageUpload } from "@/components/organization/vcard-image-upload";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import {
@@ -52,6 +53,7 @@ export type VcardModalProps = NiceModalHocProps & {
 		phone?: string | null;
 		phoneSecondary?: string | null;
 		linkedinUrl?: string | null;
+		profileImage?: string | null;
 		status: string;
 		userId?: string | null;
 	};
@@ -97,6 +99,7 @@ export const VcardModal = NiceModal.create<VcardModalProps>(({ vcard }) => {
 					phone: vcard.phone ?? "",
 					phoneSecondary: vcard.phoneSecondary ?? "",
 					linkedinUrl: vcard.linkedinUrl ?? "",
+					profileImage: vcard.profileImage ?? "",
 					status: vcard.status as VcardStatus,
 				}
 			: {
@@ -107,6 +110,7 @@ export const VcardModal = NiceModal.create<VcardModalProps>(({ vcard }) => {
 					phone: "",
 					phoneSecondary: "",
 					linkedinUrl: "",
+					profileImage: "",
 					status: VcardStatus.active,
 				},
 	});
@@ -150,6 +154,22 @@ export const VcardModal = NiceModal.create<VcardModalProps>(({ vcard }) => {
 					>
 						<ScrollArea className="flex-1">
 							<div className="space-y-4 px-6 py-4">
+								<FormField
+									control={form.control}
+									name="profileImage"
+									render={({ field }) => (
+										<FormItem>
+											<FormControl>
+												<VcardImageUpload
+													value={field.value || null}
+													onChange={(path) => field.onChange(path ?? "")}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
 								<div className="grid grid-cols-2 gap-4">
 									<FormField
 										control={form.control}

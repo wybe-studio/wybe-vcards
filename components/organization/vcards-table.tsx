@@ -326,6 +326,7 @@ export function VcardsTable(): React.JSX.Element {
 											phone: r.phone,
 											phoneSecondary: r.phone_secondary,
 											linkedinUrl: r.linkedin_url,
+											profileImage: r.profile_image,
 											status: r.status,
 											userId: r.user_id,
 										},

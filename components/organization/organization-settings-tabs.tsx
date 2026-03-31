@@ -8,6 +8,7 @@ import { DeleteOrganizationCard } from "@/components/organization/delete-organiz
 import { OrganizationChangeNameCard } from "@/components/organization/organization-change-name-card";
 import { OrganizationInviteMemberCard } from "@/components/organization/organization-invite-member-card";
 import { OrganizationLogoCard } from "@/components/organization/organization-logo-card";
+import { OrganizationLogoWideCard } from "@/components/organization/organization-logo-wide-card";
 import { OrganizationMembersCard } from "@/components/organization/organization-members-card";
 import { OrganizationProfileCard } from "@/components/organization/organization-profile-card";
 import { OrganizationStyleCard } from "@/components/organization/organization-style-card";
@@ -88,7 +89,10 @@ export function OrganizationSettingsTabs({
 			)}
 			{isAdmin && (
 				<UnderlinedTabsContent value="style">
-					<OrganizationStyleCard />
+					<div className="space-y-4">
+						<OrganizationLogoWideCard />
+						<OrganizationStyleCard />
+					</div>
 				</UnderlinedTabsContent>
 			)}
 			<UnderlinedTabsContent value="members">

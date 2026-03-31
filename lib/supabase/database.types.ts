@@ -656,6 +656,7 @@ export type Database = {
 					created_at: string;
 					header_bg_color: string | null;
 					header_text_color: string | null;
+					logo_wide: string | null;
 					organization_id: string;
 					slug_format: string;
 					tab_bg_color: string | null;
@@ -669,6 +670,7 @@ export type Database = {
 					created_at?: string;
 					header_bg_color?: string | null;
 					header_text_color?: string | null;
+					logo_wide?: string | null;
 					organization_id: string;
 					slug_format?: string;
 					tab_bg_color?: string | null;
@@ -682,6 +684,7 @@ export type Database = {
 					created_at?: string;
 					header_bg_color?: string | null;
 					header_text_color?: string | null;
+					logo_wide?: string | null;
 					organization_id?: string;
 					slug_format?: string;
 					tab_bg_color?: string | null;

@@ -18,10 +18,19 @@ import { useEnhancedModal } from "@/hooks/use-enhanced-modal";
 export type CropImageModalProps = NiceModalHocProps & {
 	image: File | null;
 	onCrop: (croppedImage: Blob | null) => void;
+	maxSize?: number;
+	outputFormat?: "image/png" | "image/webp" | "image/jpeg";
+	outputQuality?: number;
 };
 
 export const CropImageModal = NiceModal.create<CropImageModalProps>(
-	({ image, onCrop }) => {
+	({
+		image,
+		onCrop,
+		maxSize = 256,
+		outputFormat = "image/webp",
+		outputQuality = 0.85,
+	}) => {
 		const modal = useEnhancedModal();
 		const cropperRef = React.useRef<ReactCropperElement>(null);
 
@@ -31,10 +40,10 @@ export const CropImageModal = NiceModal.create<CropImageModalProps>(
 			const imageBlob = await new Promise<Blob | null>((resolve) => {
 				cropper
 					?.getCroppedCanvas({
-						maxWidth: 256,
-						maxHeight: 256,
+						maxWidth: maxSize,
+						maxHeight: maxSize,
 					})
-					.toBlob(resolve);
+					.toBlob(resolve, outputFormat, outputQuality);
 			});
 
 			return imageBlob;
