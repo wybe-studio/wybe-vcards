@@ -3,6 +3,8 @@ import { z } from "zod";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
+	adminAssignCardSchema,
+	adminPhysicalCardActionSchema,
 	generatePhysicalCardsBatchSchema,
 	listOrgPhysicalCardsAdminSchema,
 	listOrgVcardsAdminSchema,
@@ -169,5 +171,238 @@ export const adminPhysicalCardRouter = createTRPCRouter({
 			}
 
 			return { data: data ?? [], total: count ?? 0 };
+		}),
+
+	assign: protectedAdminProcedure
+		.input(adminAssignCardSchema)
+		.mutation(async ({ ctx, input }) => {
+			const adminClient = createAdminClient();
+
+			// Verify card belongs to org and is free
+			const { data: card } = await adminClient
+				.from("physical_card")
+				.select("id, status")
+				.eq("id", input.cardId)
+				.eq("organization_id", input.organizationId)
+				.single();
+
+			if (!card) {
+				throw new TRPCError({ code: "NOT_FOUND", message: "Card non trovata" });
+			}
+			if (card.status === "assigned") {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Card gia assegnata. Scollegala prima di riassegnarla.",
+				});
+			}
+			if (card.status === "disabled") {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Card disattivata. Riattivala prima di assegnarla.",
+				});
+			}
+
+			// Verify vcard belongs to org
+			const { data: vcard } = await adminClient
+				.from("vcard")
+				.select("id")
+				.eq("id", input.vcardId)
+				.eq("organization_id", input.organizationId)
+				.single();
+
+			if (!vcard) {
+				throw new TRPCError({
+					code: "NOT_FOUND",
+					message: "vCard non trovata",
+				});
+			}
+
+			// Check vcard doesn't already have a card assigned
+			const { data: existingCard } = await adminClient
+				.from("physical_card")
+				.select("id")
+				.eq("vcard_id", input.vcardId)
+				.eq("status", "assigned")
+				.maybeSingle();
+
+			if (existingCard) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Questa vCard ha gia una card fisica assegnata.",
+				});
+			}
+
+			const { error } = await adminClient
+				.from("physical_card")
+				.update({ vcard_id: input.vcardId, status: "assigned" })
+				.eq("id", input.cardId);
+
+			if (error) {
+				logger.error({ error }, "Admin: failed to assign physical card");
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Impossibile assegnare la card",
+				});
+			}
+
+			logger.info(
+				{
+					adminId: ctx.user.id,
+					organizationId: input.organizationId,
+					cardId: input.cardId,
+					vcardId: input.vcardId,
+					action: "assign",
+				},
+				"Admin assigned physical card",
+			);
+
+			return { success: true };
+		}),
+
+	unassign: protectedAdminProcedure
+		.input(adminPhysicalCardActionSchema)
+		.mutation(async ({ ctx, input }) => {
+			const adminClient = createAdminClient();
+
+			// Verify card belongs to org
+			const { data: card } = await adminClient
+				.from("physical_card")
+				.select("id, status")
+				.eq("id", input.cardId)
+				.eq("organization_id", input.organizationId)
+				.single();
+
+			if (!card) {
+				throw new TRPCError({ code: "NOT_FOUND", message: "Card non trovata" });
+			}
+			if (card.status !== "assigned") {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Questa card non e assegnata",
+				});
+			}
+
+			const { error } = await adminClient
+				.from("physical_card")
+				.update({ vcard_id: null, status: "free" })
+				.eq("id", input.cardId);
+
+			if (error) {
+				logger.error({ error }, "Admin: failed to unassign physical card");
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Impossibile scollegare la card",
+				});
+			}
+
+			logger.info(
+				{
+					adminId: ctx.user.id,
+					organizationId: input.organizationId,
+					cardId: input.cardId,
+					action: "unassign",
+				},
+				"Admin unassigned physical card",
+			);
+
+			return { success: true };
+		}),
+
+	disable: protectedAdminProcedure
+		.input(adminPhysicalCardActionSchema)
+		.mutation(async ({ ctx, input }) => {
+			const adminClient = createAdminClient();
+
+			// Verify card belongs to org
+			const { data: card } = await adminClient
+				.from("physical_card")
+				.select("id, status")
+				.eq("id", input.cardId)
+				.eq("organization_id", input.organizationId)
+				.single();
+
+			if (!card) {
+				throw new TRPCError({ code: "NOT_FOUND", message: "Card non trovata" });
+			}
+			if (card.status === "disabled") {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Questa card e gia disattivata",
+				});
+			}
+
+			const { error } = await adminClient
+				.from("physical_card")
+				.update({ vcard_id: null, status: "disabled" })
+				.eq("id", input.cardId);
+
+			if (error) {
+				logger.error({ error }, "Admin: failed to disable physical card");
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Impossibile disattivare la card",
+				});
+			}
+
+			logger.info(
+				{
+					adminId: ctx.user.id,
+					organizationId: input.organizationId,
+					cardId: input.cardId,
+					action: "disable",
+				},
+				"Admin disabled physical card",
+			);
+
+			return { success: true };
+		}),
+
+	enable: protectedAdminProcedure
+		.input(adminPhysicalCardActionSchema)
+		.mutation(async ({ ctx, input }) => {
+			const adminClient = createAdminClient();
+
+			// Verify card belongs to org
+			const { data: card } = await adminClient
+				.from("physical_card")
+				.select("id, status")
+				.eq("id", input.cardId)
+				.eq("organization_id", input.organizationId)
+				.single();
+
+			if (!card) {
+				throw new TRPCError({ code: "NOT_FOUND", message: "Card non trovata" });
+			}
+			if (card.status !== "disabled") {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "Solo le card disattivate possono essere riattivate",
+				});
+			}
+
+			const { error } = await adminClient
+				.from("physical_card")
+				.update({ status: "free" })
+				.eq("id", input.cardId);
+
+			if (error) {
+				logger.error({ error }, "Admin: failed to enable physical card");
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: "Impossibile riattivare la card",
+				});
+			}
+
+			logger.info(
+				{
+					adminId: ctx.user.id,
+					organizationId: input.organizationId,
+					cardId: input.cardId,
+					action: "enable",
+				},
+				"Admin enabled physical card",
+			);
+
+			return { success: true };
 		}),
 });
