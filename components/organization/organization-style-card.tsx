@@ -1,6 +1,8 @@
 "use client";
 
+import Color from "color";
 import { Loader2 } from "lucide-react";
+import { useCallback } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +14,14 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
+	ColorPicker,
+	ColorPickerEyeDropper,
+	ColorPickerFormat,
+	ColorPickerHue,
+	ColorPickerOutput,
+	ColorPickerSelection,
+} from "@/components/ui/color-picker";
+import {
 	Form,
 	FormControl,
 	FormField,
@@ -20,6 +30,11 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import {
 	Select,
 	SelectContent,
@@ -40,21 +55,47 @@ function ColorField({
 	value: string | null | undefined;
 	onChange: (value: string) => void;
 }) {
+	const handlePickerChange = useCallback(
+		(value: Parameters<typeof Color.rgb>[0]) => {
+			const hex = Color.rgb(value).hex();
+			onChange(hex);
+		},
+		[onChange],
+	);
+
 	return (
-		<div className="flex items-center gap-3">
-			<input
-				type="color"
-				value={value || "#000000"}
-				onChange={(e) => onChange(e.target.value)}
-				className="h-10 w-10 cursor-pointer rounded border"
-			/>
-			<div className="flex-1">
-				<span className="text-sm font-medium">{label}</span>
+		<div className="space-y-1.5">
+			<span className="text-sm font-medium">{label}</span>
+			<div className="flex items-center gap-2">
+				<Popover>
+					<PopoverTrigger asChild>
+						<button
+							type="button"
+							className="h-10 w-10 shrink-0 cursor-pointer rounded-md border shadow-sm"
+							style={{ backgroundColor: value || "#000000" }}
+						/>
+					</PopoverTrigger>
+					<PopoverContent className="w-64 p-3" align="start">
+						<ColorPicker
+							value={value || "#000000"}
+							onChange={handlePickerChange}
+							className="h-auto"
+						>
+							<ColorPickerSelection className="h-40 rounded-lg" />
+							<ColorPickerHue />
+							<div className="flex items-center gap-2">
+								<ColorPickerEyeDropper />
+								<ColorPickerOutput />
+								<ColorPickerFormat />
+							</div>
+						</ColorPicker>
+					</PopoverContent>
+				</Popover>
 				<Input
 					value={value ?? ""}
 					onChange={(e) => onChange(e.target.value)}
 					placeholder="#000000"
-					className="mt-1"
+					className="flex-1"
 				/>
 			</div>
 		</div>
