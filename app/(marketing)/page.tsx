@@ -2,13 +2,7 @@ import { CtaSection } from "@/components/marketing/sections/cta-section";
 import { FaqSection } from "@/components/marketing/sections/faq-section";
 import { FeaturesSection } from "@/components/marketing/sections/features-section";
 import { HeroSection } from "@/components/marketing/sections/hero-section";
-import { LatestArticlesSection } from "@/components/marketing/sections/latest-articles-section";
-import { LogoCloudSection } from "@/components/marketing/sections/logo-cloud-section";
-import { PricingSection } from "@/components/marketing/sections/pricing-section";
-import { StatsSection } from "@/components/marketing/sections/stats-section";
-import { TestimonialsSection } from "@/components/marketing/sections/testimonials-section";
 import { appConfig } from "@/config/app.config";
-import { getAllPosts } from "@/lib/marketing/blog/posts";
 
 function OrganizationJsonLd() {
 	const jsonLd = {
@@ -45,14 +39,6 @@ function WebSiteJsonLd() {
 		name: appConfig.appName,
 		description: appConfig.description,
 		url: appConfig.baseUrl,
-		potentialAction: {
-			"@type": "SearchAction",
-			target: {
-				"@type": "EntryPoint",
-				urlTemplate: `${appConfig.baseUrl}/blog?q={search_term_string}`,
-			},
-			"query-input": "required name=search_term_string",
-		},
 	};
 
 	return (
@@ -63,50 +49,48 @@ function WebSiteJsonLd() {
 	);
 }
 
-export default async function HomePage() {
-	const posts = await getAllPosts();
-
+export default function HomePage() {
 	const faqContent = {
 		headline: "Domande e risposte",
 		items: [
 			{
-				question: "Come posso iniziare?",
+				question: "Cos'è una vCard digitale?",
 				answer:
-					"Iniziare è semplice. Registrati con un account gratuito, completa il processo di onboarding e sarai operativo in pochi minuti.",
+					"È un biglietto da visita digitale accessibile tramite link o QR code. Contiene nome, ruolo, contatti e link social, sempre aggiornati.",
 			},
 			{
-				question: "È disponibile una prova gratuita?",
+				question: "Come funzionano le card NFC?",
 				answer:
-					"Sì, offriamo una prova gratuita di 14 giorni con accesso completo a tutte le funzionalità. Non è richiesta la carta di credito.",
+					"Ogni card NFC è collegata a una vCard. Basta avvicinare la card a uno smartphone per aprire automaticamente la pagina del contatto.",
 			},
 			{
-				question: "Posso annullare l'abbonamento in qualsiasi momento?",
+				question: "Posso personalizzare lo stile delle pagine?",
 				answer:
-					"Assolutamente. Puoi annullare il tuo abbonamento in qualsiasi momento dalle impostazioni del tuo account. Senza domande.",
+					"Sì, puoi impostare i colori del tuo brand, l'effetto aurora di sfondo e lo stile dei pulsanti per tutte le vCard della tua organizzazione.",
 			},
 			{
-				question: "Offrite assistenza clienti?",
+				question: "Quante vCard posso creare?",
 				answer:
-					"Forniamo assistenza clienti dedicata via email e chat. Il nostro team risponde di solito entro poche ore.",
+					"Il numero di vCard e card NFC dipende dal piano della tua organizzazione. L'amministratore della piattaforma configura i limiti.",
 			},
 			{
-				question: "I miei dati sono al sicuro?",
+				question: "I contatti possono salvare i dati sul telefono?",
 				answer:
-					"La sicurezza è la nostra priorità. Utilizziamo crittografia standard di settore e seguiamo le migliori pratiche per proteggere i tuoi dati.",
+					"Sì, ogni pagina vCard ha un pulsante per scaricare il file .vcf e salvare il contatto direttamente nella rubrica.",
 			},
 		],
 	};
 
 	const ctaContent = {
-		headline: "Pronto per iniziare?",
+		headline: "Pronto a digitalizzare i tuoi biglietti da visita?",
 		description:
-			"Crea il tuo account gratuito oggi. Nessuna carta di credito richiesta.",
+			"Crea il tuo account e inizia a gestire le vCard del tuo team.",
 		primaryCta: {
-			text: "Inizia la prova gratuita",
+			text: "Inizia ora",
 			href: "/auth/sign-up",
 		},
 		secondaryCta: {
-			text: "Contatta il commerciale",
+			text: "Contattaci",
 			href: "/contact",
 		},
 	};
@@ -116,13 +100,8 @@ export default async function HomePage() {
 			<OrganizationJsonLd />
 			<WebSiteJsonLd />
 			<HeroSection />
-			<LogoCloudSection />
 			<FeaturesSection />
-			<StatsSection />
-			<TestimonialsSection />
 			<FaqSection content={faqContent} />
-			<PricingSection />
-			<LatestArticlesSection posts={posts} />
 			<CtaSection content={ctaContent} />
 		</>
 	);

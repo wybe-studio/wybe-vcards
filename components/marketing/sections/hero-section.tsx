@@ -1,66 +1,8 @@
 "use client";
 
 import { ArrowRightIcon, ChevronRightIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import { GradientCard } from "@/components/marketing/primitives/gradient-card";
 import { cn } from "@/lib/utils";
-
-function HeroScreenshot() {
-	return (
-		<div className="flex flex-col gap-32">
-			{/* Mobile/Tablet Screenshot - visible below lg */}
-			<GradientCard
-				color="green"
-				placement="bottom-right"
-				className="lg:hidden"
-				rounded="xl"
-			>
-				<Image
-					src="/marketing/placeholders/placeholder-hero-light.webp"
-					alt="Screenshot dell'app"
-					width={2000}
-					height={1408}
-					className="dark:hidden"
-					priority
-				/>
-				<Image
-					src="/marketing/placeholders/placeholder-hero-dark.webp"
-					alt="Screenshot dell'app"
-					width={2000}
-					height={1408}
-					className="hidden dark:block"
-					priority
-				/>
-			</GradientCard>
-
-			{/* Desktop Screenshot - visible at lg and above */}
-			<GradientCard
-				color="green"
-				placement="bottom"
-				className="hidden lg:block"
-				rounded="2xl"
-			>
-				<Image
-					src="/marketing/placeholders/placeholder-hero-light.webp"
-					alt="Screenshot dell'app"
-					width={1328}
-					height={727}
-					className="dark:hidden"
-					priority
-				/>
-				<Image
-					src="/marketing/placeholders/placeholder-hero-dark.webp"
-					alt="Screenshot dell'app"
-					width={1328}
-					height={727}
-					className="hidden dark:block"
-					priority
-				/>
-			</GradientCard>
-		</div>
-	);
-}
 
 export function HeroSection() {
 	return (
@@ -70,7 +12,7 @@ export function HeroSection() {
 					<div className="flex flex-col items-start gap-6">
 						{/* Announcement Pill */}
 						<Link
-							href="#"
+							href="#features"
 							className={cn(
 								"relative inline-flex max-w-full items-center gap-3 overflow-hidden rounded-md px-3.5 py-2 text-sm",
 								"bg-marketing-card",
@@ -80,7 +22,7 @@ export function HeroSection() {
 							)}
 						>
 							<span className="truncate text-pretty sm:truncate">
-								Scopri le nostre ultime funzionalità
+								Novità: Card NFC personalizzate per il tuo team
 							</span>
 							<span className="hidden h-3 w-px bg-marketing-card-hover sm:block" />
 							<span className="inline-flex shrink-0 items-center gap-1 font-semibold">
@@ -98,15 +40,15 @@ export function HeroSection() {
 								"lg:text-[5rem] lg:leading-20",
 							)}
 						>
-							SaaS pronto per la produzione. Subito operativo.
+							I biglietti da visita digitali per la tua azienda.
 						</h1>
 
 						{/* Description */}
 						<div className="flex max-w-3xl flex-col gap-4 text-lg leading-8 text-marketing-fg-muted">
 							<p>
-								Applicazione demo costruita con Achromatic. Starter kit Next.js
-								16 con autenticazione, organizzazioni, abbonamenti, crediti,
-								chatbot AI e pannello admin - powered by Supabase Auth e tRPC.
+								Crea e gestisci vCard digitali per tutto il team. Condividi
+								contatti con un tap NFC o un link. Personalizza con i colori del
+								tuo brand.
 							</p>
 						</div>
 
@@ -122,19 +64,17 @@ export function HeroSection() {
 								Inizia ora
 							</Link>
 							<Link
-								href="/contact"
+								href="#features"
 								className={cn(
 									"group inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium",
 									"text-marketing-fg hover:bg-marketing-card-hover",
 								)}
 							>
-								Prenota una demo
+								Scopri come funziona
 								<ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
 							</Link>
 						</div>
 					</div>
-
-					<HeroScreenshot />
 				</div>
 			</div>
 		</section>

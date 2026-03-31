@@ -1,70 +1,33 @@
 "use client";
 
-import { ArrowRightIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { GradientCard } from "@/components/marketing/primitives/gradient-card";
+import {
+	CreditCardIcon,
+	LayoutDashboardIcon,
+	NfcIcon,
+	PaletteIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Feature {
 	title: string;
 	description: string;
-	link: string;
-	linkText: string;
-	color: "green" | "blue" | "purple" | "brown";
-	placement: "bottom-right" | "bottom-left";
-	image: {
-		light: string;
-		dark: string;
-		width: number;
-		height: number;
-	};
+	icon: React.ComponentType<{ className?: string }>;
 }
 
 function FeatureCard({ feature }: { feature: Feature }) {
+	const Icon = feature.icon;
 	return (
-		<div className="overflow-hidden rounded-lg bg-marketing-card p-2">
-			{/* Screenshot */}
-			<div className="relative overflow-hidden rounded-sm dark:after:absolute dark:after:inset-0 dark:after:rounded-sm dark:after:outline dark:after:outline-1 dark:after:-outline-offset-1 dark:after:outline-white/10 dark:after:content-['']">
-				<GradientCard
-					color={feature.color}
-					placement={feature.placement}
-					rounded="sm"
-				>
-					<Image
-						src={feature.image.light}
-						alt={feature.title}
-						width={feature.image.width}
-						height={feature.image.height}
-						className="dark:hidden"
-					/>
-					<Image
-						src={feature.image.dark}
-						alt={feature.title}
-						width={feature.image.width}
-						height={feature.image.height}
-						className="hidden dark:block"
-					/>
-				</GradientCard>
+		<div className="flex flex-col gap-4 rounded-lg bg-marketing-card p-6 sm:p-8">
+			<div className="flex size-10 items-center justify-center rounded-lg bg-marketing-card-hover">
+				<Icon className="size-5 text-marketing-fg" />
 			</div>
-
-			{/* Content */}
-			<div className="flex flex-col gap-4 p-6 sm:p-10 lg:p-6">
-				<div>
-					<h3 className="text-base font-medium leading-8 text-marketing-fg">
-						{feature.title}
-					</h3>
-					<div className="mt-2 flex flex-col gap-4 text-sm leading-7 text-marketing-fg-muted">
-						<p>{feature.description}</p>
-					</div>
+			<div>
+				<h3 className="text-base font-medium leading-8 text-marketing-fg">
+					{feature.title}
+				</h3>
+				<div className="mt-2 flex flex-col gap-4 text-sm leading-7 text-marketing-fg-muted">
+					<p>{feature.description}</p>
 				</div>
-				<Link
-					href={feature.link}
-					className="group inline-flex items-center gap-2 text-sm font-medium text-marketing-fg"
-				>
-					{feature.linkText}
-					<ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-				</Link>
 			</div>
 		</div>
 	);
@@ -73,34 +36,28 @@ function FeatureCard({ feature }: { feature: Feature }) {
 export function FeaturesSection() {
 	const features: Feature[] = [
 		{
-			title: "Autenticazione e organizzazioni",
+			title: "vCard digitali",
 			description:
-				"Autenticazione sicura con Supabase Auth. Supporto integrato per organizzazioni multi-tenant, inviti ai membri e permessi granulari basati sui ruoli.",
-			link: "#",
-			linkText: "Esplora l'autenticazione",
-			color: "blue",
-			placement: "bottom-right",
-			image: {
-				light: "/marketing/placeholders/placeholder-light.webp",
-				dark: "/marketing/placeholders/placeholder-dark.webp",
-				width: 600,
-				height: 400,
-			},
+				"Crea biglietti da visita digitali per ogni membro del team. Nome, ruolo, contatti, social — tutto in una pagina pubblica personalizzata.",
+			icon: CreditCardIcon,
 		},
 		{
-			title: "AI e sistema crediti",
+			title: "Card NFC fisiche",
 			description:
-				"Lancia funzionalità basate sull'AI all'istante. Include un'interfaccia chatbot completa, integrazione OpenAI e un sistema flessibile di consumo crediti.",
-			link: "#",
-			linkText: "Scopri lo stack",
-			color: "purple",
-			placement: "bottom-left",
-			image: {
-				light: "/marketing/placeholders/placeholder-light.webp",
-				dark: "/marketing/placeholders/placeholder-dark.webp",
-				width: 600,
-				height: 400,
-			},
+				"Assegna card NFC ai tuoi collaboratori. Un tap sullo smartphone e il contatto viene condiviso istantaneamente.",
+			icon: NfcIcon,
+		},
+		{
+			title: "Branding personalizzato",
+			description:
+				"Personalizza colori, stile e effetto aurora delle pagine vCard con l'identità visiva della tua azienda.",
+			icon: PaletteIcon,
+		},
+		{
+			title: "Gestione centralizzata",
+			description:
+				"Gestisci tutte le vCard e card fisiche da un'unica dashboard. Aggiungi, modifica e disattiva in pochi click.",
+			icon: LayoutDashboardIcon,
 		},
 	];
 
@@ -111,7 +68,7 @@ export function FeaturesSection() {
 				<div className="flex max-w-2xl flex-col gap-6">
 					<div className="flex flex-col gap-2">
 						<div className="text-sm font-semibold leading-7 text-marketing-fg-muted">
-							Funzionalità potenti
+							Funzionalità
 						</div>
 						<h2
 							className={cn(
@@ -120,24 +77,22 @@ export function FeaturesSection() {
 								"sm:text-5xl sm:leading-14",
 							)}
 						>
-							La base completa per il tuo SaaS
+							Tutto quello che serve per i biglietti da visita del tuo team
 						</h2>
 					</div>
 					<div className="text-base leading-7 text-marketing-fg-muted text-pretty">
 						<p>
-							Tutto ciò che serve per costruire un'applicazione pronta per la
-							produzione. Dall'autenticazione ai pagamenti, è tutto incluso.
+							Dalla creazione delle vCard alla distribuzione con card NFC, una
+							piattaforma completa per gestire i contatti aziendali.
 						</p>
 					</div>
 				</div>
 
 				{/* Features Grid */}
-				<div>
-					<div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-						{features.map((feature) => (
-							<FeatureCard key={feature.title} feature={feature} />
-						))}
-					</div>
+				<div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+					{features.map((feature) => (
+						<FeatureCard key={feature.title} feature={feature} />
+					))}
 				</div>
 			</div>
 		</section>

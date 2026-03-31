@@ -2,36 +2,19 @@
 
 import Link from "next/link";
 import { Logo } from "@/components/logo";
-import {
-	GitHubIcon,
-	LinkedInIcon,
-	XIcon,
-} from "@/components/marketing/icons/social-icons";
 import { appConfig } from "@/config/app.config";
 
-// Build footer links based on config (matching original footer)
 const footerLinks = [
 	{
 		group: "Prodotto",
 		items: [
 			{ title: "Funzionalità", href: "/#features" },
-			{ title: "Prezzi", href: "/pricing" },
 			{ title: "FAQ", href: "/#faq" },
-		],
-	},
-	{
-		group: "Risorse",
-		items: [
-			{ title: "Blog", href: "/blog" },
-			{ title: "Documentazione", href: "/docs" },
-			{ title: "Novità", href: "/changelog" },
 		],
 	},
 	{
 		group: "Azienda",
 		items: [
-			{ title: "Chi siamo", href: "/about" },
-			{ title: "Lavora con noi", href: "/careers" },
 			...(appConfig.contact.enabled
 				? [{ title: "Contatti", href: "/contact" }]
 				: []),
@@ -45,12 +28,6 @@ const footerLinks = [
 			{ title: "Cookie policy", href: "/legal/cookies" },
 		],
 	},
-];
-
-const socialLinks = [
-	{ name: "X", href: "https://twitter.com", icon: XIcon },
-	{ name: "GitHub", href: "https://github.com", icon: GitHubIcon },
-	{ name: "LinkedIn", href: "https://linkedin.com", icon: LinkedInIcon },
 ];
 
 function AppInfo() {
@@ -75,7 +52,7 @@ export function Footer() {
 						<AppInfo />
 
 						{/* Links Grid */}
-						<nav className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+						<nav className="grid grid-cols-2 gap-8 sm:grid-cols-3">
 							{footerLinks.map((group) => (
 								<div key={group.group} className="flex flex-col gap-4">
 									<h3 className="font-semibold tracking-wider text-marketing-fg uppercase text-xs">
@@ -100,23 +77,9 @@ export function Footer() {
 
 					{/* Bottom Section */}
 					<div className="flex flex-col items-center justify-between gap-8 border-t border-marketing-border pt-8 sm:flex-row text-sm">
-						<div className="text-marketing-fg-muted order-2 sm:order-1">
+						<div className="text-marketing-fg-muted">
 							© {new Date().getFullYear()} {appConfig.appName}. Tutti i diritti
 							riservati.
-						</div>
-						<div className="flex items-center gap-6 order-1 sm:order-2">
-							{socialLinks.map((link) => (
-								<Link
-									key={link.name}
-									href={link.href}
-									target="_blank"
-									rel="noopener noreferrer"
-									aria-label={link.name}
-									className="text-marketing-fg-muted hover:text-marketing-fg transition-all duration-200 hover:scale-110 active:scale-95 *:size-5"
-								>
-									<link.icon />
-								</Link>
-							))}
 						</div>
 					</div>
 				</div>
