@@ -19,6 +19,7 @@ export type CropImageModalProps = NiceModalHocProps & {
 	image: File | null;
 	onCrop: (croppedImage: Blob | null) => void;
 	maxSize?: number;
+	aspectRatio?: number;
 	outputFormat?: "image/png" | "image/webp" | "image/jpeg";
 	outputQuality?: number;
 };
@@ -28,6 +29,7 @@ export const CropImageModal = NiceModal.create<CropImageModalProps>(
 		image,
 		onCrop,
 		maxSize = 256,
+		aspectRatio = 1,
 		outputFormat = "image/webp",
 		outputQuality = 0.85,
 	}) => {
@@ -37,11 +39,16 @@ export const CropImageModal = NiceModal.create<CropImageModalProps>(
 		const getCroppedImage = async () => {
 			const cropper = cropperRef.current?.cropper;
 
+			const maxWidth =
+				aspectRatio >= 1 ? maxSize : Math.round(maxSize * aspectRatio);
+			const maxHeight =
+				aspectRatio >= 1 ? Math.round(maxSize / aspectRatio) : maxSize;
+
 			const imageBlob = await new Promise<Blob | null>((resolve) => {
 				cropper
 					?.getCroppedCanvas({
-						maxWidth: maxSize,
-						maxHeight: maxSize,
+						maxWidth,
+						maxHeight,
 					})
 					.toBlob(resolve, outputFormat, outputQuality);
 			});
@@ -79,9 +86,9 @@ export const CropImageModal = NiceModal.create<CropImageModalProps>(
 					<div>
 						{imageSrc && (
 							<Cropper
-								aspectRatio={1}
+								aspectRatio={aspectRatio}
 								guides={true}
-								initialAspectRatio={1}
+								initialAspectRatio={aspectRatio}
 								ref={cropperRef}
 								src={imageSrc}
 								style={{ width: "100%" }}

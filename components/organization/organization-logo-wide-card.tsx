@@ -65,6 +65,7 @@ export function OrganizationLogoWideCard(): React.JSX.Element {
 			NiceModal.show(CropImageModal, {
 				image: acceptedFiles[0],
 				maxSize: 800,
+				aspectRatio: 4,
 				outputFormat: "image/webp",
 				outputQuality: 0.85,
 				onCrop: async (croppedImageData: Blob | null) => {
