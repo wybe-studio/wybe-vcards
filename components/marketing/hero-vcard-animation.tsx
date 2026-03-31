@@ -149,7 +149,7 @@ export function HeroVcardAnimation() {
 
 	return (
 		<motion.div
-			className="relative flex items-center justify-center py-8"
+			className="relative flex items-center justify-center py-8 lg:py-0"
 			onViewportEnter={() => {
 				// Small delay so the user sees the initial state
 				setTimeout(playSequence, 400);
@@ -157,7 +157,7 @@ export function HeroVcardAnimation() {
 			viewport={{ once: true, amount: 0.5 }}
 		>
 			{/* Scene container with perspective */}
-			<div className="relative perspective-midrange">
+			<div className="relative scale-[0.8] perspective-midrange sm:scale-[0.85] lg:scale-100">
 				{/* Smartphone */}
 				<div className="relative h-[450px] w-[220px] overflow-hidden rounded-[2.5rem] border border-neutral-200 bg-neutral-950 shadow-[0_25px_60px_-12px_rgba(0,0,0,0.35),0_10px_25px_-8px_rgba(0,0,0,0.2)] lg:h-[500px] lg:w-[245px]">
 					{/* Dynamic island */}
