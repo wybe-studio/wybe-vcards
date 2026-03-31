@@ -2,7 +2,8 @@ import { getBaseUrl } from "@/lib/utils";
 
 export const appConfig = {
 	appName: "Wybe vCards",
-	description: `Gestione vCard NFC multi-tenant`,
+	description:
+		"Crea, gestisci e condividi biglietti da visita digitali NFC per la tua organizzazione",
 	baseUrl: getBaseUrl(),
 	// Contact information (displayed on contact page)
 	contact: {
