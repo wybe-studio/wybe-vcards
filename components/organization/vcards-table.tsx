@@ -316,6 +316,7 @@ export function VcardsTable(): React.JSX.Element {
 								onClick={() => {
 									const r = row.original;
 									NiceModal.show(VcardModal, {
+										organizationId: organization?.id ?? "",
 										vcard: {
 											id: r.id,
 											firstName: r.first_name,
@@ -402,7 +403,14 @@ export function VcardsTable(): React.JSX.Element {
 			defaultSorting={DEFAULT_SORTING}
 			sorting={sorting}
 			toolbarActions={
-				<Button onClick={() => NiceModal.show(VcardModal)} size="sm">
+				<Button
+					onClick={() =>
+						NiceModal.show(VcardModal, {
+							organizationId: organization?.id ?? "",
+						})
+					}
+					size="sm"
+				>
 					<PlusIcon className="size-4 shrink-0" />
 					Aggiungi vCard
 				</Button>

@@ -169,11 +169,8 @@ export const LeadsModal = NiceModal.create<LeadsModalProps>(({ lead }) => {
 				</SheetHeader>
 
 				<Form {...form}>
-					<form
-						onSubmit={onSubmit}
-						className="flex flex-1 flex-col overflow-hidden"
-					>
-						<ScrollArea className="flex-1">
+					<form onSubmit={onSubmit} className="flex min-h-0 flex-1 flex-col">
+						<ScrollArea className="min-h-0 flex-1">
 							<div className="space-y-4 px-6 py-4">
 								<div className="grid grid-cols-2 gap-4">
 									<FormField

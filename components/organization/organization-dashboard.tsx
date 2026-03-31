@@ -1,16 +1,21 @@
 "use client";
 
+import NiceModal from "@ebay/nice-modal-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import {
 	CreditCardIcon,
 	IdCardIcon,
+	MailIcon,
 	NfcIcon,
+	PencilIcon,
+	PhoneIcon,
 	PlusIcon,
 	SettingsIcon,
 	UsersIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { VcardModal } from "@/components/organization/vcard-modal";
 import { VcardStatusBadge } from "@/components/organization/vcard-status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,6 +28,9 @@ import {
 } from "@/components/ui/card";
 import { CenteredSpinner } from "@/components/ui/custom/centered-spinner";
 import { Progress } from "@/components/ui/progress";
+import { UserAvatar } from "@/components/user/user-avatar";
+import { useActiveOrganization } from "@/hooks/use-active-organization";
+import { useStorage } from "@/hooks/use-storage";
 import type { VcardStatus } from "@/lib/enums";
 import { trpc } from "@/trpc/client";
 
@@ -51,6 +59,9 @@ export function OrganizationDashboard() {
 
 	return (
 		<div className="fade-in flex animate-in flex-col space-y-6 duration-500">
+			{/* La mia vCard - solo per membri non-admin */}
+			{!stats.isAdmin && <MyVcardSection />}
+
 			{/* KPI Cards */}
 			<div
 				className={`grid grid-cols-1 gap-4 ${stats.isAdmin ? "md:grid-cols-3" : "md:grid-cols-2"}`}
@@ -240,7 +251,7 @@ export function OrganizationDashboard() {
 							<Button asChild variant="outline" className="justify-start">
 								<Link href="/dashboard/organization/vcards">
 									<IdCardIcon className="mr-2 h-4 w-4" />
-									La mia vCard
+									Le mie vCard
 								</Link>
 							</Button>
 						)}
@@ -248,5 +259,142 @@ export function OrganizationDashboard() {
 				</Card>
 			</div>
 		</div>
+	);
+}
+
+function MyVcardSection() {
+	const { data: organization } = useActiveOrganization();
+	const { data, isPending } = trpc.organization.vcard.list.useQuery({
+		limit: 10,
+		offset: 0,
+		sortBy: "created_at",
+		sortOrder: "desc",
+	});
+
+	if (isPending) return null;
+
+	const vcards = data?.data ?? [];
+
+	if (vcards.length === 0) {
+		return (
+			<Card>
+				<CardHeader>
+					<CardTitle>La mia vCard</CardTitle>
+					<CardDescription>
+						Non hai ancora una vCard assegnata al tuo account.
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<div className="flex flex-col items-center justify-center py-6 text-center">
+						<IdCardIcon className="mb-3 h-10 w-10 text-muted-foreground/50" />
+						<p className="text-muted-foreground text-sm">
+							Contatta un amministratore per richiedere la tua vCard.
+						</p>
+					</div>
+				</CardContent>
+			</Card>
+		);
+	}
+
+	return (
+		<div className="space-y-4">
+			<h2 className="font-semibold text-lg tracking-tight">
+				{vcards.length === 1 ? "La mia vCard" : "Le mie vCard"}
+			</h2>
+			<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+				{vcards.map((vc) => (
+					<MyVcardCard
+						key={vc.id}
+						vcard={vc}
+						organizationId={organization?.id ?? ""}
+					/>
+				))}
+			</div>
+		</div>
+	);
+}
+
+function MyVcardCard({
+	vcard,
+	organizationId,
+}: {
+	organizationId: string;
+	vcard: {
+		id: string;
+		first_name: string;
+		last_name: string;
+		slug: string;
+		job_title: string | null;
+		email: string | null;
+		phone: string | null;
+		phone_secondary: string | null;
+		linkedin_url: string | null;
+		profile_image: string | null;
+		status: string;
+		user_id: string | null;
+	};
+}) {
+	const fullName = `${vcard.first_name} ${vcard.last_name}`;
+	const profileImageUrl = useStorage(vcard.profile_image);
+
+	return (
+		<Card>
+			<CardContent className="flex items-start gap-4 pt-6">
+				<UserAvatar
+					className="size-14 shrink-0"
+					name={fullName}
+					src={profileImageUrl}
+				/>
+				<div className="min-w-0 flex-1 space-y-1">
+					<div className="flex items-center gap-2">
+						<h3 className="truncate font-semibold">{fullName}</h3>
+						<VcardStatusBadge status={vcard.status as VcardStatus} />
+					</div>
+					{vcard.job_title && (
+						<p className="truncate text-muted-foreground text-sm">
+							{vcard.job_title}
+						</p>
+					)}
+					{vcard.email && (
+						<p className="flex items-center gap-1.5 truncate text-muted-foreground text-sm">
+							<MailIcon className="size-3.5 shrink-0" />
+							{vcard.email}
+						</p>
+					)}
+					{vcard.phone && (
+						<p className="flex items-center gap-1.5 truncate text-muted-foreground text-sm">
+							<PhoneIcon className="size-3.5 shrink-0" />
+							{vcard.phone}
+						</p>
+					)}
+				</div>
+				<Button
+					variant="outline"
+					size="sm"
+					onClick={() => {
+						NiceModal.show(VcardModal, {
+							organizationId,
+							vcard: {
+								id: vcard.id,
+								firstName: vcard.first_name,
+								lastName: vcard.last_name,
+								slug: vcard.slug,
+								jobTitle: vcard.job_title,
+								email: vcard.email,
+								phone: vcard.phone,
+								phoneSecondary: vcard.phone_secondary,
+								linkedinUrl: vcard.linkedin_url,
+								profileImage: vcard.profile_image,
+								status: vcard.status,
+								userId: vcard.user_id,
+							},
+						});
+					}}
+				>
+					<PencilIcon className="mr-1.5 size-3.5" />
+					Modifica
+				</Button>
+			</CardContent>
+		</Card>
 	);
 }

@@ -89,7 +89,7 @@ function SheetContent({
 			<SheetPrimitive.Content
 				data-slot="sheet-content"
 				className={cn(
-					"fixed z-50 flex flex-col gap-4 bg-background fill-mode-forwards! shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:duration-300 data-[state=open]:duration-500",
+					"fixed z-50 flex flex-col gap-4 overflow-hidden bg-background fill-mode-forwards! shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:duration-300 data-[state=open]:duration-500",
 					side === "right" &&
 						"data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm",
 					side === "left" &&
@@ -184,11 +184,11 @@ function SheetDescription({
 
 export {
 	Sheet,
-	SheetTrigger,
 	SheetClose,
 	SheetContent,
-	SheetHeader,
-	SheetFooter,
-	SheetTitle,
 	SheetDescription,
+	SheetFooter,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
 };
