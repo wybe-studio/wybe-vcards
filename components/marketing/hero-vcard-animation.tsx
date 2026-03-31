@@ -108,12 +108,14 @@ const NFC_SHADOW_REST =
 const NFC_SHADOW_TAP =
 	"0 4px 8px -2px rgba(0,0,0,0.15), 0 2px 4px -1px rgba(0,0,0,0.08)";
 
+const NFC_SHADOW_HOVER =
+	"0 25px 50px -10px rgba(0,0,0,0.25), 0 12px 20px -6px rgba(0,0,0,0.15)";
+
 export function HeroVcardAnimation() {
 	const nfcControls = useAnimation();
 	const screenControls = useAnimation();
 	const rippleControls = useAnimation();
 	const shouldReduce = useReducedMotion();
-	const hasPlayed = useRef(false);
 	const isPlaying = useRef(false);
 
 	async function playSequence() {
@@ -122,52 +124,21 @@ export function HeroVcardAnimation() {
 
 		if (shouldReduce) {
 			screenControls.start({ opacity: 1, y: 0, transition: { duration: 0 } });
-			hasPlayed.current = true;
+			nfcControls.start({ rotateX: 0, transition: { duration: 0 } });
 			isPlaying.current = false;
 			return;
 		}
 
-		// Reset to initial state if replaying on hover
-		if (hasPlayed.current) {
-			await Promise.all([
-				nfcControls.start({
-					x: 0,
-					y: 0,
-					rotateX: 0,
-					rotateY: 0,
-					scale: 1,
-					boxShadow: NFC_SHADOW_REST,
-					transition: { duration: 0 },
-				}),
-				screenControls.start({
-					opacity: 0,
-					y: 20,
-					transition: { duration: 0.2 },
-				}),
-				rippleControls.start({
-					scale: 0,
-					opacity: 0,
-					transition: { duration: 0 },
-				}),
-			]);
-		}
-
-		// Phase 1: NFC card moves toward phone (tap)
+		// Phase 1: NFC card flattens and moves toward phone (trapezoid → rectangle)
 		await nfcControls.start({
-			x: 20,
-			y: -80,
-			rotateX: -8,
-			rotateY: 5,
-			scale: 0.95,
+			y: -50,
+			rotateX: 0,
+			scale: 0.97,
 			boxShadow: NFC_SHADOW_TAP,
-			transition: {
-				duration: 0.8,
-				ease: [0.22, 1, 0.36, 1],
-				delay: hasPlayed.current ? 0 : 0.4,
-			},
+			transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.4 },
 		});
 
-		// Phase 2 + 3: Ripple and vCard reveal run in parallel
+		// Phase 2 + 3: Ripple and vCard reveal run in parallel, card settles back flat
 		await Promise.all([
 			rippleControls.start({
 				scale: [0, 2.5],
@@ -179,32 +150,48 @@ export function HeroVcardAnimation() {
 				y: 0,
 				transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
 			}),
+			nfcControls.start({
+				y: 0,
+				rotateX: 0,
+				scale: 1,
+				boxShadow: NFC_SHADOW_REST,
+				transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
+			}),
 		]);
 
-		// Phase 4: NFC card returns
-		await nfcControls.start({
-			x: 0,
+		isPlaying.current = false;
+	}
+
+	function onHover() {
+		if (isPlaying.current) return;
+		nfcControls.start({
+			y: -6,
+			scale: 1.02,
+			boxShadow: NFC_SHADOW_HOVER,
+			transition: { duration: 0.3, ease: "easeOut" },
+		});
+	}
+
+	function onHoverEnd() {
+		if (isPlaying.current) return;
+		nfcControls.start({
 			y: 0,
-			rotateX: 0,
-			rotateY: 0,
 			scale: 1,
 			boxShadow: NFC_SHADOW_REST,
-			transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.3 },
+			transition: { duration: 0.3, ease: "easeOut" },
 		});
-
-		hasPlayed.current = true;
-		isPlaying.current = false;
 	}
 
 	return (
 		<motion.div
-			className="relative flex cursor-pointer items-center justify-center py-8 lg:py-0"
+			className="relative flex items-center justify-center py-8 lg:py-0"
 			onViewportEnter={() => playSequence()}
 			viewport={{ once: true, amount: 0.5 }}
-			onHoverStart={() => playSequence()}
+			onHoverStart={onHover}
+			onHoverEnd={onHoverEnd}
 		>
 			{/* Scene container with perspective */}
-			<div className="relative scale-[0.8] perspective-midrange sm:scale-[0.85] lg:scale-100">
+			<div className="relative scale-[0.8] perspective-dramatic sm:scale-[0.85] lg:scale-100">
 				{/* Smartphone */}
 				<div className="relative h-[450px] w-[220px] overflow-hidden rounded-[2.5rem] border border-neutral-200 bg-neutral-950 shadow-[0_25px_60px_-12px_rgba(0,0,0,0.35),0_10px_25px_-8px_rgba(0,0,0,0.2)] lg:h-[500px] lg:w-[245px]">
 					{/* Dynamic island */}
@@ -212,9 +199,9 @@ export function HeroVcardAnimation() {
 
 					{/* Screen area */}
 					<div className="absolute inset-1.5 overflow-hidden rounded-4xl bg-linear-to-br from-slate-800 to-slate-900">
-						{/* Ripple effect — positioned near NFC tap point (bottom area) */}
+						{/* Ripple effect — centered on phone screen */}
 						<motion.div
-							className="pointer-events-none absolute bottom-[25%] left-1/2 z-30 size-16 -translate-x-1/2 rounded-full bg-white/30"
+							className="pointer-events-none absolute bottom-[30%] left-1/2 z-30 size-16 -translate-x-1/2 rounded-full bg-white/30"
 							initial={{ scale: 0, opacity: 0 }}
 							animate={rippleControls}
 						/>
@@ -230,13 +217,14 @@ export function HeroVcardAnimation() {
 					</div>
 				</div>
 
-				{/* NFC Card — positioned bottom-right, overlapping the empty space below vCard content */}
+				{/* NFC Card — centered, wider than phone, trapezoid perspective (wide at bottom) */}
 				<motion.div
-					className="absolute -bottom-6 -right-10 z-10 flex h-22.5 w-35 items-center justify-center rounded-2xl border border-neutral-100 bg-white"
+					className="absolute -bottom-14 left-1/2 z-10 flex h-30 w-70 -translate-x-1/2 items-center justify-center rounded-2xl border border-neutral-100 bg-white lg:w-75"
 					style={{ boxShadow: NFC_SHADOW_REST }}
+					initial={{ rotateX: -12, y: 0, scale: 1 }}
 					animate={nfcControls}
 				>
-					<Nfc className="size-9 text-neutral-400" />
+					<Nfc className="size-10 text-neutral-400" />
 				</motion.div>
 			</div>
 		</motion.div>
