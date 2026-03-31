@@ -46,9 +46,17 @@ export const createOrganizationFormSchema = z.object({
 	name: z.string().min(1, "Il nome dell'organizzazione è obbligatorio"),
 });
 
-// Change organization name form
+// Change organization name and slug form
 export const changeOrganizationNameSchema = z.object({
 	name: z.string().min(1).max(64),
+	slug: z
+		.string()
+		.min(1)
+		.max(64)
+		.regex(
+			/^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+			"Lo slug può contenere solo lettere minuscole, numeri e trattini",
+		),
 });
 
 // Type exports

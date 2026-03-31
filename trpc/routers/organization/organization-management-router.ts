@@ -48,6 +48,12 @@ export const organizationManagementRouter = createTRPCRouter({
 		.input(
 			z.object({
 				name: z.string().min(1).max(100).trim().optional(),
+				slug: z
+					.string()
+					.min(1)
+					.max(64)
+					.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+					.optional(),
 				metadata: z.string().optional(),
 			}),
 		)
@@ -57,6 +63,24 @@ export const organizationManagementRouter = createTRPCRouter({
 			const updateData: Record<string, unknown> = {};
 			if (input.name !== undefined) updateData.name = input.name;
 			if (input.metadata !== undefined) updateData.metadata = input.metadata;
+
+			if (input.slug !== undefined) {
+				// Check slug uniqueness (excluding current org)
+				const { data: existing } = await ctx.supabase
+					.from("organization")
+					.select("id")
+					.eq("slug", input.slug)
+					.neq("id", ctx.organization.id)
+					.maybeSingle();
+
+				if (existing) {
+					throw new TRPCError({
+						code: "CONFLICT",
+						message: "Questo slug è già in uso da un'altra organizzazione",
+					});
+				}
+				updateData.slug = input.slug;
+			}
 
 			const { data, error } = await ctx.supabase
 				.from("organization")

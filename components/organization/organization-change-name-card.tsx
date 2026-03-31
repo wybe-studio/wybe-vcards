@@ -27,7 +27,7 @@ import { changeOrganizationNameSchema } from "@/schemas/organization-schemas";
 import { trpc } from "@/trpc/client";
 
 /**
- * Card component for changing the organization name.
+ * Card component for changing the organization name and slug.
  * Uses the active organization from session.
  */
 export function OrganizationChangeNameCard(): React.JSX.Element {
@@ -39,33 +39,44 @@ export function OrganizationChangeNameCard(): React.JSX.Element {
 		schema: changeOrganizationNameSchema,
 		values: {
 			name: organization?.name ?? "",
+			slug: organization?.slug ?? "",
 		},
 	});
 
 	const updateMutation = trpc.organization.management.update.useMutation({
 		onSuccess: () => {
-			toast.success("Il nome dell'organizzazione è stato aggiornato.");
+			toast.success(
+				"Le impostazioni dell'organizzazione sono state aggiornate.",
+			);
 			utils.organization.list.invalidate();
 			router.refresh();
 		},
-		onError: () => {
-			toast.error(
-				"Non è stato possibile aggiornare il nome dell'organizzazione. Riprova più tardi.",
-			);
+		onError: (error) => {
+			if (error.data?.code === "CONFLICT") {
+				toast.error("Questo slug è già in uso. Scegline un altro.");
+			} else {
+				toast.error(
+					"Non è stato possibile aggiornare l'organizzazione. Riprova più tardi.",
+				);
+			}
 		},
 	});
 
-	const onSubmit = methods.handleSubmit(async ({ name }) => {
+	const onSubmit = methods.handleSubmit(async ({ name, slug }) => {
 		if (!organization) return;
-		await updateMutation.mutateAsync({ name });
+		await updateMutation.mutateAsync({ name, slug });
 	});
+
+	const isDirty =
+		methods.formState.dirtyFields.name || methods.formState.dirtyFields.slug;
 
 	return (
 		<Card>
 			<CardHeader>
 				<CardTitle>Nome organizzazione</CardTitle>
 				<CardDescription>
-					Aggiorna il nome della tua organizzazione.
+					Aggiorna il nome e lo slug della tua organizzazione. Lo slug viene
+					usato negli URL pubblici delle vCard.
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -79,7 +90,7 @@ export function OrganizationChangeNameCard(): React.JSX.Element {
 										<FormLabel>Nome organizzazione</FormLabel>
 										<FormControl>
 											<Input
-												placeholder={""}
+												placeholder=""
 												required
 												autoComplete="organization"
 												{...field}
@@ -90,19 +101,28 @@ export function OrganizationChangeNameCard(): React.JSX.Element {
 								</FormItem>
 							)}
 						/>
+						<FormField
+							name="slug"
+							render={({ field }) => (
+								<FormItem asChild>
+									<Field>
+										<FormLabel>Slug (URL)</FormLabel>
+										<FormControl>
+											<Input placeholder="es. acme" required {...field} />
+										</FormControl>
+										<FormMessage />
+									</Field>
+								</FormItem>
+							)}
+						/>
 						<div>
 							<Button
 								className="w-full md:w-auto"
-								disabled={
-									!(
-										methods.formState.isValid &&
-										methods.formState.dirtyFields.name
-									)
-								}
+								disabled={!(methods.formState.isValid && isDirty)}
 								loading={methods.formState.isSubmitting}
 								type="submit"
 							>
-								Aggiorna nome
+								Salva modifiche
 							</Button>
 						</div>
 					</form>
