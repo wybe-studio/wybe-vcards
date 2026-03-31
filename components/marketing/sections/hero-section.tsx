@@ -9,7 +9,8 @@ export function HeroSection() {
 	return (
 		<section id="hero" className="py-16 scroll-mt-14">
 			<div className="mx-auto flex max-w-2xl flex-col gap-16 px-6 md:max-w-3xl lg:max-w-7xl lg:px-10">
-				<div className="flex flex-col gap-32">
+				<div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8">
+					{/* Left column — text content */}
 					<div className="flex flex-col items-start gap-6">
 						{/* Announcement Pill */}
 						<Link
@@ -75,6 +76,10 @@ export function HeroSection() {
 								<ArrowRightIcon className="size-3.5 transition-transform group-hover:translate-x-0.5" />
 							</Link>
 						</div>
+					</div>
+
+					{/* Right column — NFC animation */}
+					<div className="flex items-center justify-center lg:justify-end">
 						<HeroVcardAnimation />
 					</div>
 				</div>
