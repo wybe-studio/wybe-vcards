@@ -11,18 +11,21 @@
 -- Admin: p.fusacchia@wybe.it
 INSERT INTO auth.users (
   id, instance_id, aud, role, email, encrypted_password,
-  email_confirmed_at, raw_user_meta_data, raw_app_meta_data,
-  created_at, updated_at, confirmation_token, recovery_token
+  email_confirmed_at, last_sign_in_at, recovery_sent_at,
+  raw_user_meta_data, raw_app_meta_data,
+  created_at, updated_at,
+  confirmation_token, email_change, email_change_token_new, recovery_token
 ) VALUES (
   'a0000000-0000-0000-0000-000000000001',
   '00000000-0000-0000-0000-000000000000',
   'authenticated', 'authenticated',
   'p.fusacchia@wybe.it',
-  crypt('TestingPassword1', gen_salt('bf')),
-  now(),
-  jsonb_build_object('name', 'Piero Fusacchia', 'image', ''),
-  jsonb_build_object('provider', 'email', 'providers', array['email']),
-  now(), now(), '', ''
+  extensions.crypt('TestingPassword1', extensions.gen_salt('bf')),
+  now(), now(), now(),
+  '{"name":"Piero Fusacchia","image":""}',
+  '{"provider":"email","providers":["email"]}',
+  now(), now(),
+  '', '', '', ''
 );
 
 INSERT INTO auth.identities (
@@ -30,26 +33,29 @@ INSERT INTO auth.identities (
 ) VALUES (
   'a0000000-0000-0000-0000-000000000001',
   'a0000000-0000-0000-0000-000000000001',
-  'p.fusacchia@wybe.it', 'email',
-  jsonb_build_object('sub', 'a0000000-0000-0000-0000-000000000001', 'email', 'p.fusacchia@wybe.it'),
+  'a0000000-0000-0000-0000-000000000001', 'email',
+  format('{"sub":"%s","email":"%s"}', 'a0000000-0000-0000-0000-000000000001', 'p.fusacchia@wybe.it')::jsonb,
   now(), now(), now()
 );
 
 -- Owner Wybe: fusacchia.piero+o1@gmail.com
 INSERT INTO auth.users (
   id, instance_id, aud, role, email, encrypted_password,
-  email_confirmed_at, raw_user_meta_data, raw_app_meta_data,
-  created_at, updated_at, confirmation_token, recovery_token
+  email_confirmed_at, last_sign_in_at, recovery_sent_at,
+  raw_user_meta_data, raw_app_meta_data,
+  created_at, updated_at,
+  confirmation_token, email_change, email_change_token_new, recovery_token
 ) VALUES (
   'a0000000-0000-0000-0000-000000000002',
   '00000000-0000-0000-0000-000000000000',
   'authenticated', 'authenticated',
   'fusacchia.piero+o1@gmail.com',
-  crypt('TestingPassword1', gen_salt('bf')),
-  now(),
-  jsonb_build_object('name', 'Marco Bianchi', 'image', ''),
-  jsonb_build_object('provider', 'email', 'providers', array['email']),
-  now(), now(), '', ''
+  extensions.crypt('TestingPassword1', extensions.gen_salt('bf')),
+  now(), now(), now(),
+  '{"name":"Marco Bianchi","image":""}',
+  '{"provider":"email","providers":["email"]}',
+  now(), now(),
+  '', '', '', ''
 );
 
 INSERT INTO auth.identities (
@@ -57,26 +63,29 @@ INSERT INTO auth.identities (
 ) VALUES (
   'a0000000-0000-0000-0000-000000000002',
   'a0000000-0000-0000-0000-000000000002',
-  'fusacchia.piero+o1@gmail.com', 'email',
-  jsonb_build_object('sub', 'a0000000-0000-0000-0000-000000000002', 'email', 'fusacchia.piero+o1@gmail.com'),
+  'a0000000-0000-0000-0000-000000000002', 'email',
+  format('{"sub":"%s","email":"%s"}', 'a0000000-0000-0000-0000-000000000002', 'fusacchia.piero+o1@gmail.com')::jsonb,
   now(), now(), now()
 );
 
 -- Owner Acme: fusacchia.piero+o2@gmail.com
 INSERT INTO auth.users (
   id, instance_id, aud, role, email, encrypted_password,
-  email_confirmed_at, raw_user_meta_data, raw_app_meta_data,
-  created_at, updated_at, confirmation_token, recovery_token
+  email_confirmed_at, last_sign_in_at, recovery_sent_at,
+  raw_user_meta_data, raw_app_meta_data,
+  created_at, updated_at,
+  confirmation_token, email_change, email_change_token_new, recovery_token
 ) VALUES (
   'a0000000-0000-0000-0000-000000000003',
   '00000000-0000-0000-0000-000000000000',
   'authenticated', 'authenticated',
   'fusacchia.piero+o2@gmail.com',
-  crypt('TestingPassword1', gen_salt('bf')),
-  now(),
-  jsonb_build_object('name', 'Giulia Rossi', 'image', ''),
-  jsonb_build_object('provider', 'email', 'providers', array['email']),
-  now(), now(), '', ''
+  extensions.crypt('TestingPassword1', extensions.gen_salt('bf')),
+  now(), now(), now(),
+  '{"name":"Giulia Rossi","image":""}',
+  '{"provider":"email","providers":["email"]}',
+  now(), now(),
+  '', '', '', ''
 );
 
 INSERT INTO auth.identities (
@@ -84,26 +93,29 @@ INSERT INTO auth.identities (
 ) VALUES (
   'a0000000-0000-0000-0000-000000000003',
   'a0000000-0000-0000-0000-000000000003',
-  'fusacchia.piero+o2@gmail.com', 'email',
-  jsonb_build_object('sub', 'a0000000-0000-0000-0000-000000000003', 'email', 'fusacchia.piero+o2@gmail.com'),
+  'a0000000-0000-0000-0000-000000000003', 'email',
+  format('{"sub":"%s","email":"%s"}', 'a0000000-0000-0000-0000-000000000003', 'fusacchia.piero+o2@gmail.com')::jsonb,
   now(), now(), now()
 );
 
 -- Member Wybe: fusacchia.piero+m1@gmail.com
 INSERT INTO auth.users (
   id, instance_id, aud, role, email, encrypted_password,
-  email_confirmed_at, raw_user_meta_data, raw_app_meta_data,
-  created_at, updated_at, confirmation_token, recovery_token
+  email_confirmed_at, last_sign_in_at, recovery_sent_at,
+  raw_user_meta_data, raw_app_meta_data,
+  created_at, updated_at,
+  confirmation_token, email_change, email_change_token_new, recovery_token
 ) VALUES (
   'a0000000-0000-0000-0000-000000000004',
   '00000000-0000-0000-0000-000000000000',
   'authenticated', 'authenticated',
   'fusacchia.piero+m1@gmail.com',
-  crypt('TestingPassword1', gen_salt('bf')),
-  now(),
-  jsonb_build_object('name', 'Luca Verdi', 'image', ''),
-  jsonb_build_object('provider', 'email', 'providers', array['email']),
-  now(), now(), '', ''
+  extensions.crypt('TestingPassword1', extensions.gen_salt('bf')),
+  now(), now(), now(),
+  '{"name":"Luca Verdi","image":""}',
+  '{"provider":"email","providers":["email"]}',
+  now(), now(),
+  '', '', '', ''
 );
 
 INSERT INTO auth.identities (
@@ -111,8 +123,8 @@ INSERT INTO auth.identities (
 ) VALUES (
   'a0000000-0000-0000-0000-000000000004',
   'a0000000-0000-0000-0000-000000000004',
-  'fusacchia.piero+m1@gmail.com', 'email',
-  jsonb_build_object('sub', 'a0000000-0000-0000-0000-000000000004', 'email', 'fusacchia.piero+m1@gmail.com'),
+  'a0000000-0000-0000-0000-000000000004', 'email',
+  format('{"sub":"%s","email":"%s"}', 'a0000000-0000-0000-0000-000000000004', 'fusacchia.piero+m1@gmail.com')::jsonb,
   now(), now(), now()
 );
 
