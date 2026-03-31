@@ -200,9 +200,32 @@ export const protectedProcedure = t.procedure
  *
  */
 export const protectedAdminProcedure = protectedProcedure.use(
-	({ ctx, next }) => {
+	async ({ ctx, next }) => {
 		if (ctx.profile?.role !== "admin") {
 			throw new TRPCError({ code: "FORBIDDEN", message: "Accesso negato" });
+		}
+
+		// Enforce 2FA for admin procedures
+		const { data: factors } = await ctx.supabase.auth.mfa.listFactors();
+		const hasVerifiedFactor = factors?.totp?.some(
+			(f) => f.status === "verified",
+		);
+
+		if (!hasVerifiedFactor) {
+			throw new TRPCError({
+				code: "FORBIDDEN",
+				message:
+					"Configura l'autenticazione a due fattori per accedere alle funzionalita admin",
+			});
+		}
+
+		const aal =
+			((ctx.claims as Record<string, unknown>)?.aal as string) ?? "aal1";
+		if (aal !== "aal2") {
+			throw new TRPCError({
+				code: "FORBIDDEN",
+				message: "Autenticazione a due fattori richiesta",
+			});
 		}
 
 		return next({ ctx });
