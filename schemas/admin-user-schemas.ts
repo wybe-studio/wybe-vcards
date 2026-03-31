@@ -1,6 +1,6 @@
-import { UserRole } from "@/lib/enums";
 import { z } from "zod/v4";
 import { appConfig } from "@/config/app.config";
+import { UserRole } from "@/lib/enums";
 
 // Sortable fields for users
 export const UserSortField = z.enum(["name", "email", "role", "createdAt"]);

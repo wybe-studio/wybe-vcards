@@ -9,6 +9,8 @@ import { OrganizationChangeNameCard } from "@/components/organization/organizati
 import { OrganizationInviteMemberCard } from "@/components/organization/organization-invite-member-card";
 import { OrganizationLogoCard } from "@/components/organization/organization-logo-card";
 import { OrganizationMembersCard } from "@/components/organization/organization-members-card";
+import { OrganizationProfileCard } from "@/components/organization/organization-profile-card";
+import { OrganizationStyleCard } from "@/components/organization/organization-style-card";
 import {
 	UnderlinedTabs,
 	UnderlinedTabsContent,
@@ -17,7 +19,14 @@ import {
 } from "@/components/ui/custom/underlined-tabs";
 import { billingConfig } from "@/config/billing.config";
 
-const tabValues = ["general", "members", "subscription", "credits"] as const;
+const tabValues = [
+	"general",
+	"profile",
+	"style",
+	"members",
+	"subscription",
+	"credits",
+] as const;
 type TabValue = (typeof tabValues)[number];
 
 type OrganizationSettingsTabsProps = {
@@ -45,6 +54,14 @@ export function OrganizationSettingsTabs({
 						Generale
 					</UnderlinedTabsTrigger>
 				)}
+				{isAdmin && (
+					<UnderlinedTabsTrigger value="profile">
+						Profilo aziendale
+					</UnderlinedTabsTrigger>
+				)}
+				{isAdmin && (
+					<UnderlinedTabsTrigger value="style">Stile</UnderlinedTabsTrigger>
+				)}
 				<UnderlinedTabsTrigger value="members">Membri</UnderlinedTabsTrigger>
 				{billingConfig.enabled && (
 					<UnderlinedTabsTrigger value="subscription">
@@ -62,6 +79,16 @@ export function OrganizationSettingsTabs({
 						<OrganizationChangeNameCard />
 						<DeleteOrganizationCard />
 					</div>
+				</UnderlinedTabsContent>
+			)}
+			{isAdmin && (
+				<UnderlinedTabsContent value="profile">
+					<OrganizationProfileCard />
+				</UnderlinedTabsContent>
+			)}
+			{isAdmin && (
+				<UnderlinedTabsContent value="style">
+					<OrganizationStyleCard />
 				</UnderlinedTabsContent>
 			)}
 			<UnderlinedTabsContent value="members">

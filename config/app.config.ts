@@ -1,8 +1,8 @@
 import { getBaseUrl } from "@/lib/utils";
 
 export const appConfig = {
-	appName: "Wybe",
-	description: `Descrizione di Wybe`,
+	appName: "Wybe vCards",
+	description: `Gestione vCard NFC multi-tenant`,
 	baseUrl: getBaseUrl(),
 	// Contact information (displayed on contact page)
 	contact: {

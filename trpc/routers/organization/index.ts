@@ -17,7 +17,11 @@ import { organizationAiRouter } from "@/trpc/routers/organization/organization-a
 import { organizationCreditRouter } from "@/trpc/routers/organization/organization-credit-router";
 import { organizationLeadRouter } from "@/trpc/routers/organization/organization-lead-router";
 import { organizationManagementRouter } from "@/trpc/routers/organization/organization-management-router";
+import { organizationPhysicalCardRouter } from "@/trpc/routers/organization/organization-physical-card-router";
+import { organizationProfileRouter } from "@/trpc/routers/organization/organization-profile-router";
+import { organizationStyleRouter } from "@/trpc/routers/organization/organization-style-router";
 import { organizationSubscriptionRouter } from "@/trpc/routers/organization/organization-subscription-router";
+import { organizationVcardRouter } from "@/trpc/routers/organization/organization-vcard-router";
 
 async function generateOrganizationSlug(
 	supabase: SupabaseClient,
@@ -183,5 +187,9 @@ export const organizationRouter = createTRPCRouter({
 	credit: organizationCreditRouter,
 	lead: organizationLeadRouter,
 	management: organizationManagementRouter,
+	physicalCard: organizationPhysicalCardRouter,
+	profile: organizationProfileRouter,
+	style: organizationStyleRouter,
 	subscription: organizationSubscriptionRouter,
+	vcard: organizationVcardRouter,
 });

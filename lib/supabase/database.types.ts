@@ -530,6 +530,8 @@ export type Database = {
 					created_at: string;
 					id: string;
 					logo: string | null;
+					max_physical_cards: number;
+					max_vcards: number;
 					metadata: string | null;
 					name: string;
 					slug: string | null;
@@ -540,6 +542,8 @@ export type Database = {
 					created_at?: string;
 					id?: string;
 					logo?: string | null;
+					max_physical_cards?: number;
+					max_vcards?: number;
 					metadata?: string | null;
 					name: string;
 					slug?: string | null;
@@ -550,6 +554,8 @@ export type Database = {
 					created_at?: string;
 					id?: string;
 					logo?: string | null;
+					max_physical_cards?: number;
+					max_vcards?: number;
 					metadata?: string | null;
 					name?: string;
 					slug?: string | null;
@@ -557,6 +563,184 @@ export type Database = {
 					updated_at?: string;
 				};
 				Relationships: [];
+			};
+			organization_profile: {
+				Row: {
+					address: string | null;
+					admin_contact_email: string | null;
+					admin_contact_name: string | null;
+					ateco_code: string | null;
+					bank_name: string | null;
+					company_name: string | null;
+					created_at: string;
+					email: string | null;
+					facebook_url: string | null;
+					fiscal_code: string | null;
+					iban: string | null;
+					instagram_url: string | null;
+					legal_address: string | null;
+					linkedin_url: string | null;
+					notes: string | null;
+					organization_id: string;
+					pec: string | null;
+					phone: string | null;
+					sdi_code: string | null;
+					updated_at: string;
+					vat_number: string | null;
+					website: string | null;
+				};
+				Insert: {
+					address?: string | null;
+					admin_contact_email?: string | null;
+					admin_contact_name?: string | null;
+					ateco_code?: string | null;
+					bank_name?: string | null;
+					company_name?: string | null;
+					created_at?: string;
+					email?: string | null;
+					facebook_url?: string | null;
+					fiscal_code?: string | null;
+					iban?: string | null;
+					instagram_url?: string | null;
+					legal_address?: string | null;
+					linkedin_url?: string | null;
+					notes?: string | null;
+					organization_id: string;
+					pec?: string | null;
+					phone?: string | null;
+					sdi_code?: string | null;
+					updated_at?: string;
+					vat_number?: string | null;
+					website?: string | null;
+				};
+				Update: {
+					address?: string | null;
+					admin_contact_email?: string | null;
+					admin_contact_name?: string | null;
+					ateco_code?: string | null;
+					bank_name?: string | null;
+					company_name?: string | null;
+					created_at?: string;
+					email?: string | null;
+					facebook_url?: string | null;
+					fiscal_code?: string | null;
+					iban?: string | null;
+					instagram_url?: string | null;
+					legal_address?: string | null;
+					linkedin_url?: string | null;
+					notes?: string | null;
+					organization_id?: string;
+					pec?: string | null;
+					phone?: string | null;
+					sdi_code?: string | null;
+					updated_at?: string;
+					vat_number?: string | null;
+					website?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "organization_profile_organization_id_fkey";
+						columns: ["organization_id"];
+						isOneToOne: true;
+						referencedRelation: "organization";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			organization_style: {
+				Row: {
+					aurora_color_primary: string | null;
+					aurora_color_secondary: string | null;
+					button_bg_color: string | null;
+					button_text_color: string | null;
+					created_at: string;
+					header_bg_color: string | null;
+					header_text_color: string | null;
+					organization_id: string;
+					slug_format: string;
+					tab_bg_color: string | null;
+					updated_at: string;
+				};
+				Insert: {
+					aurora_color_primary?: string | null;
+					aurora_color_secondary?: string | null;
+					button_bg_color?: string | null;
+					button_text_color?: string | null;
+					created_at?: string;
+					header_bg_color?: string | null;
+					header_text_color?: string | null;
+					organization_id: string;
+					slug_format?: string;
+					tab_bg_color?: string | null;
+					updated_at?: string;
+				};
+				Update: {
+					aurora_color_primary?: string | null;
+					aurora_color_secondary?: string | null;
+					button_bg_color?: string | null;
+					button_text_color?: string | null;
+					created_at?: string;
+					header_bg_color?: string | null;
+					header_text_color?: string | null;
+					organization_id?: string;
+					slug_format?: string;
+					tab_bg_color?: string | null;
+					updated_at?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "organization_style_organization_id_fkey";
+						columns: ["organization_id"];
+						isOneToOne: true;
+						referencedRelation: "organization";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			physical_card: {
+				Row: {
+					code: string;
+					created_at: string;
+					id: string;
+					organization_id: string;
+					status: Database["public"]["Enums"]["physical_card_status"];
+					updated_at: string;
+					vcard_id: string | null;
+				};
+				Insert: {
+					code: string;
+					created_at?: string;
+					id?: string;
+					organization_id: string;
+					status?: Database["public"]["Enums"]["physical_card_status"];
+					updated_at?: string;
+					vcard_id?: string | null;
+				};
+				Update: {
+					code?: string;
+					created_at?: string;
+					id?: string;
+					organization_id?: string;
+					status?: Database["public"]["Enums"]["physical_card_status"];
+					updated_at?: string;
+					vcard_id?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "physical_card_organization_id_fkey";
+						columns: ["organization_id"];
+						isOneToOne: false;
+						referencedRelation: "organization";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "physical_card_vcard_id_fkey";
+						columns: ["vcard_id"];
+						isOneToOne: false;
+						referencedRelation: "vcard";
+						referencedColumns: ["id"];
+					},
+				];
 			};
 			subscription: {
 				Row: {
@@ -721,6 +905,71 @@ export type Database = {
 				};
 				Relationships: [];
 			};
+			vcard: {
+				Row: {
+					created_at: string;
+					email: string | null;
+					first_name: string;
+					id: string;
+					job_title: string | null;
+					last_name: string;
+					linkedin_url: string | null;
+					metadata: Json | null;
+					organization_id: string;
+					phone: string | null;
+					phone_secondary: string | null;
+					profile_image: string | null;
+					slug: string;
+					status: Database["public"]["Enums"]["vcard_status"];
+					updated_at: string;
+					user_id: string | null;
+				};
+				Insert: {
+					created_at?: string;
+					email?: string | null;
+					first_name: string;
+					id?: string;
+					job_title?: string | null;
+					last_name: string;
+					linkedin_url?: string | null;
+					metadata?: Json | null;
+					organization_id: string;
+					phone?: string | null;
+					phone_secondary?: string | null;
+					profile_image?: string | null;
+					slug: string;
+					status?: Database["public"]["Enums"]["vcard_status"];
+					updated_at?: string;
+					user_id?: string | null;
+				};
+				Update: {
+					created_at?: string;
+					email?: string | null;
+					first_name?: string;
+					id?: string;
+					job_title?: string | null;
+					last_name?: string;
+					linkedin_url?: string | null;
+					metadata?: Json | null;
+					organization_id?: string;
+					phone?: string | null;
+					phone_secondary?: string | null;
+					profile_image?: string | null;
+					slug?: string;
+					status?: Database["public"]["Enums"]["vcard_status"];
+					updated_at?: string;
+					user_id?: string | null;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "vcard_organization_id_fkey";
+						columns: ["organization_id"];
+						isOneToOne: false;
+						referencedRelation: "organization";
+						referencedColumns: ["id"];
+					},
+				];
+			};
 		};
 		Views: {
 			[_ in never]: never;
@@ -747,6 +996,8 @@ export type Database = {
 					created_at: string;
 					id: string;
 					logo: string | null;
+					max_physical_cards: number;
+					max_vcards: number;
 					metadata: string | null;
 					name: string;
 					slug: string | null;
@@ -768,6 +1019,11 @@ export type Database = {
 					p_organization_id: string;
 				};
 				Returns: Json;
+			};
+			generate_card_code: { Args: never; Returns: string };
+			generate_physical_cards_batch: {
+				Args: { p_count: number; p_organization_id: string };
+				Returns: number;
 			};
 			get_organization_members: {
 				Args: { p_organization_id: string };
@@ -850,6 +1106,7 @@ export type Database = {
 				| "refunded"
 				| "partially_refunded";
 			order_type: "subscription" | "one_time";
+			physical_card_status: "free" | "assigned" | "disabled";
 			price_model: "flat" | "per_seat" | "metered";
 			price_type: "recurring" | "one_time";
 			subscription_status:
@@ -862,6 +1119,7 @@ export type Database = {
 				| "trialing"
 				| "unpaid";
 			user_role: "user" | "admin";
+			vcard_status: "active" | "suspended" | "archived";
 		};
 		CompositeTypes: {
 			[_ in never]: never;
@@ -1035,6 +1293,7 @@ export const Constants = {
 				"partially_refunded",
 			],
 			order_type: ["subscription", "one_time"],
+			physical_card_status: ["free", "assigned", "disabled"],
 			price_model: ["flat", "per_seat", "metered"],
 			price_type: ["recurring", "one_time"],
 			subscription_status: [
@@ -1048,6 +1307,7 @@ export const Constants = {
 				"unpaid",
 			],
 			user_role: ["user", "admin"],
+			vcard_status: ["active", "suspended", "archived"],
 		},
 	},
 } as const;

@@ -5,7 +5,9 @@ import {
 	ChevronRight,
 	CoinsIcon,
 	CreditCardIcon,
+	IdCardIcon,
 	LayoutDashboardIcon,
+	NfcIcon,
 	SettingsIcon,
 	UserSearchIcon,
 	UsersIcon,
@@ -76,6 +78,16 @@ export function OrganizationMenuItems(): React.JSX.Element {
 					icon: LayoutDashboardIcon,
 					exactMatch: true,
 				},
+				{ label: "vCard", href: `${basePath}/vcards`, icon: IdCardIcon },
+				...(userIsAdmin
+					? [
+							{
+								label: "Card fisiche",
+								href: `${basePath}/physical-cards`,
+								icon: NfcIcon,
+							},
+						]
+					: []),
 				...(featuresConfig.leads
 					? [{ label: "Lead", href: `${basePath}/leads`, icon: UserSearchIcon }]
 					: []),

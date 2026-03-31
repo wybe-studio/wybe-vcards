@@ -7,7 +7,8 @@ import type {
 	SortingState,
 } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { MoreHorizontalIcon, PlusIcon } from "lucide-react";
+import { MoreHorizontalIcon, PlusIcon, SettingsIcon } from "lucide-react";
+import Link from "next/link";
 import {
 	parseAsArrayOf,
 	parseAsInteger,
@@ -435,6 +436,13 @@ export function OrganizationsTable(): React.JSX.Element {
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end">
+								<DropdownMenuItem asChild>
+									<Link href={`/dashboard/admin/organizations/${id}`}>
+										<SettingsIcon className="mr-2 size-4" />
+										Gestisci vCard e limiti
+									</Link>
+								</DropdownMenuItem>
+								<DropdownMenuSeparator />
 								<DropdownMenuItem
 									onClick={() => {
 										NiceModal.show(AdjustCreditsModal, {

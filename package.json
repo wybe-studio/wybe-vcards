@@ -119,6 +119,7 @@
 		"nuqs": "2.8.9",
 		"papaparse": "5.5.3",
 		"pino": "10.3.1",
+		"qrcode.react": "^4.2.0",
 		"radix-ui": "1.4.3",
 		"react": "19.2.4",
 		"react-cropper": "2.3.3",
