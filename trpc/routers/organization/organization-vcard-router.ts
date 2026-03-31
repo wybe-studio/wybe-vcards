@@ -20,7 +20,7 @@ export const organizationVcardRouter = createTRPCRouter({
 
 			let dbQuery = ctx.supabase
 				.from("vcard")
-				.select("*", { count: "exact" })
+				.select("*, physical_card(id, code, status)", { count: "exact" })
 				.eq("organization_id", orgId);
 
 			// Members see only their own vCard

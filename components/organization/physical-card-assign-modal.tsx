@@ -54,6 +54,7 @@ export const PhysicalCardAssignModal =
 			onSuccess: () => {
 				toast.success("Card assegnata con successo");
 				utils.organization.physicalCard.list.invalidate();
+				utils.organization.vcard.list.invalidate();
 				modal.handleClose();
 			},
 			onError: (error) => {

@@ -7,7 +7,13 @@ import type {
 	SortingState,
 } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { MoreHorizontalIcon, PlusIcon } from "lucide-react";
+import {
+	CreditCardIcon,
+	ExternalLinkIcon,
+	PencilIcon,
+	PlusIcon,
+	TrashIcon,
+} from "lucide-react";
 import {
 	parseAsArrayOf,
 	parseAsInteger,
@@ -28,13 +34,12 @@ import {
 	SortableColumnHeader,
 } from "@/components/ui/custom/data-table";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { UserAvatar } from "@/components/user/user-avatar";
+import { useActiveOrganization } from "@/hooks/use-active-organization";
 import { VcardStatus } from "@/lib/enums";
 import type { VcardSortField } from "@/schemas/vcard-schemas";
 import { trpc } from "@/trpc/client";
@@ -49,6 +54,12 @@ const SORT_FIELDS = [
 	"status",
 	"created_at",
 ];
+
+interface PhysicalCardRef {
+	id: string;
+	code: string;
+	status: string;
+}
 
 interface Vcard {
 	id: string;
@@ -66,6 +77,7 @@ interface Vcard {
 	user_id: string | null;
 	created_at: string;
 	updated_at: string;
+	physical_card: PhysicalCardRef[];
 }
 
 const statusLabels: Record<string, string> = {
@@ -75,6 +87,7 @@ const statusLabels: Record<string, string> = {
 };
 
 export function VcardsTable(): React.JSX.Element {
+	const { data: organization } = useActiveOrganization();
 	const [rowSelection, setRowSelection] = React.useState({});
 
 	const [searchQuery, setSearchQuery] = useQueryState(
@@ -233,6 +246,24 @@ export function VcardsTable(): React.JSX.Element {
 			),
 		},
 		{
+			accessorKey: "physical_card",
+			header: "Card fisica",
+			enableSorting: false,
+			cell: ({ row }) => {
+				const cards = row.original.physical_card;
+				const card = cards?.[0];
+				if (!card) {
+					return <span className="text-muted-foreground">—</span>;
+				}
+				return (
+					<div className="flex items-center gap-1.5">
+						<CreditCardIcon className="size-3.5 text-muted-foreground" />
+						<span className="font-mono text-xs">{card.code}</span>
+					</div>
+				);
+			},
+		},
+		{
 			accessorKey: "status",
 			header: ({ column }) => (
 				<SortableColumnHeader column={column} title="Stato" />
@@ -256,20 +287,35 @@ export function VcardsTable(): React.JSX.Element {
 			id: "actions",
 			enableSorting: false,
 			cell: ({ row }) => (
-				<div className="flex justify-end">
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
+				<div className="flex justify-end gap-1">
+					{organization?.slug && (
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<Button
+									className="size-8 text-muted-foreground"
+									size="icon"
+									variant="ghost"
+									asChild
+								>
+									<a
+										href={`/${organization.slug}/${row.original.slug}`}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<ExternalLinkIcon className="size-4" />
+										<span className="sr-only">Apri pagina pubblica</span>
+									</a>
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>Apri pagina pubblica</TooltipContent>
+						</Tooltip>
+					)}
+					<Tooltip>
+						<TooltipTrigger asChild>
 							<Button
-								className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
+								className="size-8 text-muted-foreground"
 								size="icon"
 								variant="ghost"
-							>
-								<MoreHorizontalIcon className="shrink-0" />
-								<span className="sr-only">Apri menu</span>
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuItem
 								onClick={() => {
 									const r = row.original;
 									NiceModal.show(VcardModal, {
@@ -289,10 +335,18 @@ export function VcardsTable(): React.JSX.Element {
 									});
 								}}
 							>
-								Modifica
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem
+								<PencilIcon className="size-4" />
+								<span className="sr-only">Modifica</span>
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>Modifica</TooltipContent>
+					</Tooltip>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button
+								className="size-8 text-muted-foreground hover:text-destructive"
+								size="icon"
+								variant="ghost"
 								onClick={() => {
 									NiceModal.show(ConfirmationModal, {
 										title: "Eliminare la vCard?",
@@ -304,12 +358,13 @@ export function VcardsTable(): React.JSX.Element {
 											deleteVcardMutation.mutate({ id: row.original.id }),
 									});
 								}}
-								variant="destructive"
 							>
-								Elimina
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+								<TrashIcon className="size-4" />
+								<span className="sr-only">Elimina</span>
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>Elimina</TooltipContent>
+					</Tooltip>
 				</div>
 			),
 		},

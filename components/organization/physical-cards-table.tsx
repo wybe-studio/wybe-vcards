@@ -156,6 +156,7 @@ export function PhysicalCardsTable(): React.JSX.Element {
 		onSuccess: () => {
 			toast.success("Card scollegata");
 			utils.organization.physicalCard.list.invalidate();
+			utils.organization.vcard.list.invalidate();
 		},
 		onError: (error) => {
 			toast.error(error.message || "Impossibile scollegare la card");

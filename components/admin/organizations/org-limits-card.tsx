@@ -44,9 +44,16 @@ export function OrgLimitsCard({
 		},
 	});
 
+	const utils = trpc.useUtils();
+
 	const updateMutation = trpc.admin.physicalCard.updateLimits.useMutation({
 		onSuccess: () => {
 			toast.success("Limiti aggiornati");
+			utils.admin.physicalCard.getOrgLimits.invalidate({ organizationId });
+			utils.admin.physicalCard.listOrgVcards.invalidate({ organizationId });
+			utils.admin.physicalCard.listOrgPhysicalCards.invalidate({
+				organizationId,
+			});
 		},
 		onError: (error) => {
 			toast.error(error.message);
