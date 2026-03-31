@@ -27,7 +27,21 @@ export const organizationPhysicalCardRouter = createTRPCRouter({
 				.eq("organization_id", ctx.organization.id);
 
 			if (query) {
-				dbQuery = dbQuery.or(`code.ilike.%${query}%`);
+				const { data: matchingVcards } = await ctx.supabase
+					.from("vcard")
+					.select("id")
+					.eq("organization_id", ctx.organization.id)
+					.or(`first_name.ilike.%${query}%,last_name.ilike.%${query}%`);
+
+				const vcardIds = matchingVcards?.map((v) => v.id) ?? [];
+
+				if (vcardIds.length > 0) {
+					dbQuery = dbQuery.or(
+						`code.ilike.%${query}%,vcard_id.in.(${vcardIds.join(",")})`,
+					);
+				} else {
+					dbQuery = dbQuery.or(`code.ilike.%${query}%`);
+				}
 			}
 
 			if (filters?.status && filters.status.length > 0) {

@@ -8,8 +8,8 @@ import type {
 } from "@tanstack/react-table";
 import { format } from "date-fns";
 import {
-	CreditCardIcon,
 	ExternalLinkIcon,
+	NfcIcon,
 	PencilIcon,
 	PlusIcon,
 	TrashIcon,
@@ -28,7 +28,6 @@ import { VcardModal } from "@/components/organization/vcard-modal";
 import { VcardStatusBadge } from "@/components/organization/vcard-status-badge";
 import { Button } from "@/components/ui/button";
 import {
-	createSelectionColumn,
 	DataTable,
 	type FilterConfig,
 	SortableColumnHeader,
@@ -88,7 +87,6 @@ const statusLabels: Record<string, string> = {
 
 export function VcardsTable(): React.JSX.Element {
 	const { data: organization } = useActiveOrganization();
-	const [rowSelection, setRowSelection] = React.useState({});
 
 	const [searchQuery, setSearchQuery] = useQueryState(
 		"query",
@@ -198,7 +196,6 @@ export function VcardsTable(): React.JSX.Element {
 	};
 
 	const columns: ColumnDef<Vcard>[] = [
-		createSelectionColumn<Vcard>(),
 		{
 			accessorKey: "name",
 			header: ({ column }) => (
@@ -257,7 +254,7 @@ export function VcardsTable(): React.JSX.Element {
 				}
 				return (
 					<div className="flex items-center gap-1.5">
-						<CreditCardIcon className="size-3.5 text-muted-foreground" />
+						<NfcIcon className="size-3.5 text-muted-foreground" />
 						<span className="font-mono text-xs">{card.code}</span>
 					</div>
 				);
@@ -389,19 +386,16 @@ export function VcardsTable(): React.JSX.Element {
 			emptyMessage="Nessuna vCard trovata."
 			enableFilters
 			enablePagination
-			enableRowSelection
 			enableSearch
 			filters={vcardFilters}
 			loading={isPending}
 			onFiltersChange={handleFiltersChange}
 			onPageIndexChange={setPageIndex}
 			onPageSizeChange={setPageSize}
-			onRowSelectionChange={setRowSelection}
 			onSearchQueryChange={handleSearchQueryChange}
 			onSortingChange={handleSortingChange}
 			pageIndex={pageIndex || 0}
 			pageSize={pageSize || DEFAULT_PAGE_SIZE}
-			rowSelection={rowSelection}
 			searchPlaceholder="Cerca vCard..."
 			searchQuery={searchQuery || ""}
 			defaultSorting={DEFAULT_SORTING}

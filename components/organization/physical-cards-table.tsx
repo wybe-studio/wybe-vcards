@@ -7,7 +7,13 @@ import type {
 	SortingState,
 } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { MoreHorizontalIcon } from "lucide-react";
+import {
+	BanIcon,
+	ExternalLinkIcon,
+	LinkIcon,
+	PowerIcon,
+	UnlinkIcon,
+} from "lucide-react";
 import {
 	parseAsArrayOf,
 	parseAsInteger,
@@ -27,16 +33,15 @@ import {
 	SortableColumnHeader,
 } from "@/components/ui/custom/data-table";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { PhysicalCardStatus } from "@/lib/enums";
 import { trpc } from "@/trpc/client";
 
 const DEFAULT_PAGE_SIZE = 25;
-const DEFAULT_SORTING: SortingState = [{ id: "created_at", desc: true }];
+const DEFAULT_SORTING: SortingState = [{ id: "status", desc: true }];
 
 interface PhysicalCard {
 	id: string;
@@ -243,21 +248,34 @@ export function PhysicalCardsTable(): React.JSX.Element {
 			cell: ({ row }) => {
 				const card = row.original;
 				return (
-					<div className="flex justify-end">
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
+					<div className="flex justify-end gap-1">
+						<Tooltip>
+							<TooltipTrigger asChild>
 								<Button
-									className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
+									className="size-8 text-muted-foreground"
 									size="icon"
 									variant="ghost"
+									asChild
 								>
-									<MoreHorizontalIcon className="shrink-0" />
-									<span className="sr-only">Apri menu</span>
+									<a
+										href={`/code/${card.code}`}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<ExternalLinkIcon className="size-4" />
+										<span className="sr-only">Apri link card</span>
+									</a>
 								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								{card.status === "free" && (
-									<DropdownMenuItem
+							</TooltipTrigger>
+							<TooltipContent>Apri link card</TooltipContent>
+						</Tooltip>
+						{card.status === "free" && (
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										className="size-8 text-muted-foreground"
+										size="icon"
+										variant="ghost"
 										onClick={() =>
 											NiceModal.show(PhysicalCardAssignModal, {
 												cardId: card.id,
@@ -265,12 +283,21 @@ export function PhysicalCardsTable(): React.JSX.Element {
 											})
 										}
 									>
-										Assegna
-									</DropdownMenuItem>
-								)}
-								{card.status === "assigned" && (
-									<>
-										<DropdownMenuItem
+										<LinkIcon className="size-4" />
+										<span className="sr-only">Assegna</span>
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Assegna</TooltipContent>
+							</Tooltip>
+						)}
+						{card.status === "assigned" && (
+							<>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											className="size-8 text-muted-foreground"
+											size="icon"
+											variant="ghost"
 											onClick={() =>
 												NiceModal.show(ConfirmationModal, {
 													title: "Scollegare la card?",
@@ -282,9 +309,18 @@ export function PhysicalCardsTable(): React.JSX.Element {
 												})
 											}
 										>
-											Scollega
-										</DropdownMenuItem>
-										<DropdownMenuItem
+											<UnlinkIcon className="size-4" />
+											<span className="sr-only">Scollega</span>
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>Scollega</TooltipContent>
+								</Tooltip>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											className="size-8 text-muted-foreground hover:text-destructive"
+											size="icon"
+											variant="ghost"
 											onClick={() =>
 												NiceModal.show(ConfirmationModal, {
 													title: "Disattivare la card?",
@@ -296,21 +332,31 @@ export function PhysicalCardsTable(): React.JSX.Element {
 														disableMutation.mutate({ id: card.id }),
 												})
 											}
-											variant="destructive"
 										>
-											Disattiva
-										</DropdownMenuItem>
-									</>
-								)}
-								{card.status === "disabled" && (
-									<DropdownMenuItem
+											<BanIcon className="size-4" />
+											<span className="sr-only">Disattiva</span>
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>Disattiva</TooltipContent>
+								</Tooltip>
+							</>
+						)}
+						{card.status === "disabled" && (
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										className="size-8 text-muted-foreground"
+										size="icon"
+										variant="ghost"
 										onClick={() => enableMutation.mutate({ id: card.id })}
 									>
-										Riattiva
-									</DropdownMenuItem>
-								)}
-							</DropdownMenuContent>
-						</DropdownMenu>
+										<PowerIcon className="size-4" />
+										<span className="sr-only">Riattiva</span>
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>Riattiva</TooltipContent>
+							</Tooltip>
+						)}
 					</div>
 				);
 			},
@@ -346,7 +392,7 @@ export function PhysicalCardsTable(): React.JSX.Element {
 			onSortingChange={handleSortingChange}
 			pageIndex={pageIndex || 0}
 			pageSize={pageSize || DEFAULT_PAGE_SIZE}
-			searchPlaceholder="Cerca per codice..."
+			searchPlaceholder="Cerca per codice o vCard..."
 			searchQuery={searchQuery || ""}
 			defaultSorting={DEFAULT_SORTING}
 			sorting={sorting}
