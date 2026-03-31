@@ -1,6 +1,6 @@
 "use client";
 
-import { Linkedin, Mail, Nfc, Phone, Smartphone, UserPlus } from "lucide-react";
+import { Linkedin, Mail, Nfc, Smartphone, UserPlus } from "lucide-react";
 
 // -- Static mini vCard (fake data) --------------------------------------------------
 
@@ -8,10 +8,7 @@ function MiniVcard() {
 	return (
 		<div className="h-full w-full origin-top-left overflow-hidden">
 			{/* Header */}
-			<div
-				className="relative h-[140px] overflow-hidden px-3 pt-3"
-				style={{ backgroundColor: "#1e293b" }}
-			>
+			<div className="relative h-[140px] overflow-hidden bg-slate-800 px-3 pt-3">
 				{/* Fake logo placeholder */}
 				<div className="mb-4 flex items-center justify-between">
 					<div className="h-5 w-20 rounded bg-white/20" />
@@ -28,14 +25,11 @@ function MiniVcard() {
 					</div>
 				</div>
 				{/* Diagonal cut (like real vcard) */}
-				<div
-					className="pointer-events-none absolute -bottom-3 -left-4 h-[50px] w-[200%] -rotate-6"
-					style={{ backgroundColor: "#f1f5f9" }}
-				/>
+				<div className="pointer-events-none absolute -bottom-3 -left-4 h-[50px] w-[200%] -rotate-6 bg-slate-100" />
 			</div>
 
 			{/* Tabs */}
-			<div className="flex" style={{ backgroundColor: "#f1f5f9" }}>
+			<div className="flex bg-slate-100">
 				<div className="flex-1 border-b-2 border-slate-800 py-2 text-center text-[10px] font-medium">
 					Contatti
 				</div>
@@ -67,10 +61,7 @@ function MiniVcard() {
 
 			{/* Add contact button */}
 			<div className="flex items-center justify-center bg-white px-3 py-3">
-				<div
-					className="flex w-full items-center justify-center gap-1.5 rounded-full py-2 text-[10px] font-medium text-white"
-					style={{ backgroundColor: "#1e293b" }}
-				>
+				<div className="flex w-full items-center justify-center gap-1.5 rounded-full bg-slate-800 py-2 text-[10px] font-medium text-white">
 					<UserPlus className="size-3" />
 					Aggiungi contatto
 				</div>
@@ -114,7 +105,7 @@ export function HeroVcardAnimation() {
 	return (
 		<div className="relative flex items-center justify-center py-8">
 			{/* Scene container with perspective */}
-			<div className="relative" style={{ perspective: "800px" }}>
+			<div className="relative perspective-midrange">
 				{/* Smartphone */}
 				<div className="relative h-[450px] w-[220px] overflow-hidden rounded-[2.5rem] border border-neutral-200 bg-neutral-950 shadow-[0_25px_60px_-12px_rgba(0,0,0,0.35),0_10px_25px_-8px_rgba(0,0,0,0.2)] lg:h-[500px] lg:w-[245px]">
 					{/* Dynamic island */}
@@ -123,7 +114,7 @@ export function HeroVcardAnimation() {
 					{/* Screen area */}
 					<div className="absolute inset-[6px] overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-800 to-slate-900">
 						{/* vCard content — initially hidden, revealed by animation */}
-						<div className="h-full w-full opacity-0" id="hero-vcard-screen">
+						<div className="h-full w-full opacity-0">
 							<MiniVcard />
 						</div>
 					</div>
