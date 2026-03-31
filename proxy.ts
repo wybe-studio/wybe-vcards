@@ -183,7 +183,7 @@ export default async function proxy(req: NextRequest) {
 		// Query user profile for ban and onboarding status
 		const { data: profile } = await supabase
 			.from("user_profile")
-			.select("banned, ban_expires, onboarding_complete")
+			.select("banned, ban_expires, onboarding_complete, role")
 			.eq("id", user.sub)
 			.single();
 
@@ -215,6 +215,35 @@ export default async function proxy(req: NextRequest) {
 					origin,
 				),
 			);
+		}
+
+		// Enforce 2FA for platform admins accessing admin routes
+		if (pathname.startsWith("/dashboard/admin")) {
+			if (profile?.role === "admin") {
+				const { data: factors } = await supabase.auth.mfa.listFactors();
+				const hasVerifiedFactor = factors?.totp?.some(
+					(f: { status: string }) => f.status === "verified",
+				);
+
+				if (!hasVerifiedFactor) {
+					return NextResponse.redirect(
+						new URL("/dashboard/account/setup-2fa", origin),
+					);
+				}
+
+				// Check AAL level from JWT claims
+				const aal = user.aal ?? "aal1";
+				if (aal !== "aal2") {
+					return NextResponse.redirect(
+						new URL(
+							withQuery("/auth/verify", {
+								redirectTo: pathname,
+							}),
+							origin,
+						),
+					);
+				}
+			}
 		}
 
 		return response;
