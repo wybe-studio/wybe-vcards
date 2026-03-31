@@ -2,12 +2,14 @@
 
 import {
 	BotIcon,
+	BuildingIcon,
 	ChevronRight,
 	CoinsIcon,
 	CreditCardIcon,
 	IdCardIcon,
 	LayoutDashboardIcon,
 	NfcIcon,
+	PaletteIcon,
 	SettingsIcon,
 	UserSearchIcon,
 	UsersIcon,
@@ -112,6 +114,16 @@ export function OrganizationMenuItems(): React.JSX.Element {
 								label: "Generale",
 								href: `${basePath}/settings?tab=general`,
 								icon: SettingsIcon,
+							},
+							{
+								label: "Profilo aziendale",
+								href: `${basePath}/settings?tab=profile`,
+								icon: BuildingIcon,
+							},
+							{
+								label: "Stile",
+								href: `${basePath}/settings?tab=style`,
+								icon: PaletteIcon,
 							},
 						]
 					: []),
