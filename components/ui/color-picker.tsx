@@ -85,12 +85,14 @@ export const ColorPicker = ({
 		selectedColor.alpha() * 100 || defaultColor.alpha() * 100,
 	);
 	const [mode, setMode] = useState("hex");
+	const isSyncingFromProp = useRef(false);
 
 	// Update color when controlled value changes
 	useEffect(() => {
 		if (value) {
 			const color = Color(value);
 
+			isSyncingFromProp.current = true;
 			setHue(color.hue());
 			setSaturation(color.saturationl());
 			setLightness(color.lightness());
@@ -98,8 +100,12 @@ export const ColorPicker = ({
 		}
 	}, [value]);
 
-	// Notify parent of changes
+	// Notify parent of changes (skip when syncing from prop to avoid loop)
 	useEffect(() => {
+		if (isSyncingFromProp.current) {
+			isSyncingFromProp.current = false;
+			return;
+		}
 		if (onChange) {
 			const color = Color.hsl(hue, saturation, lightness).alpha(alpha / 100);
 			const rgba = color.rgb().array();
