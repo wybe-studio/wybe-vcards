@@ -224,7 +224,10 @@ export function OrganizationMembersTable({
 					))
 				) : (
 					<TableRow>
-						<TableCell className="h-24 text-center" colSpan={columns.length}>
+						<TableCell
+							className="h-24 text-center text-muted-foreground text-sm"
+							colSpan={columns.length}
+						>
 							Nessun membro.
 						</TableCell>
 					</TableRow>

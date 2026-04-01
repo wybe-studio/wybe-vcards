@@ -173,7 +173,7 @@ export function ContactSection() {
 													</FormLabel>
 													<FormControl>
 														<input
-															placeholder="John"
+															placeholder="Mario"
 															autoComplete="given-name"
 															className={cn(
 																"flex h-10 w-full rounded-lg px-3 py-2 text-sm outline-none transition-colors",
@@ -197,7 +197,7 @@ export function ContactSection() {
 													</FormLabel>
 													<FormControl>
 														<input
-															placeholder="Doe"
+															placeholder="Rossi"
 															autoComplete="family-name"
 															className={cn(
 																"flex h-10 w-full rounded-lg px-3 py-2 text-sm outline-none transition-colors",
@@ -223,7 +223,7 @@ export function ContactSection() {
 												<FormControl>
 													<input
 														type="email"
-														placeholder="john@example.com"
+														placeholder="mario@esempio.it"
 														autoComplete="email"
 														className={cn(
 															"flex h-10 w-full rounded-lg px-3 py-2 text-sm outline-none transition-colors",
