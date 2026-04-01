@@ -351,11 +351,11 @@ export function VcardsTable(): React.JSX.Element {
 										rel="noopener noreferrer"
 									>
 										<ExternalLinkIcon className="size-4" />
-										<span className="sr-only">Apri pagina pubblica</span>
+										<span className="sr-only">Anteprima pubblica</span>
 									</a>
 								</Button>
 							</TooltipTrigger>
-							<TooltipContent>Apri pagina pubblica</TooltipContent>
+							<TooltipContent>Anteprima pubblica</TooltipContent>
 						</Tooltip>
 					)}
 					<Tooltip>
