@@ -104,6 +104,7 @@ export function OrganizationInviteMemberCard(): React.JSX.Element {
 													<OrganizationRoleSelect
 														value={field.value ?? "member"}
 														onSelect={field.onChange}
+														excludeRoles={["owner"]}
 													/>
 												</FormControl>
 												<FormMessage />

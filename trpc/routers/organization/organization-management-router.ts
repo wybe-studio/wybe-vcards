@@ -170,6 +170,11 @@ export const organizationManagementRouter = createTRPCRouter({
 		.mutation(async ({ ctx, input }) => {
 			assertOrgAdmin(ctx.membership.role);
 
+			// Only owner can invite as admin
+			if (input.role === "admin") {
+				assertOrgOwner(ctx.membership.role);
+			}
+
 			// Check if user is already a member (by email → look up auth user)
 			// For now, check if there's already a pending invitation
 			const { data: existingInvite } = await ctx.supabase
