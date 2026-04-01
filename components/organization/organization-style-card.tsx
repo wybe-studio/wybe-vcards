@@ -1,9 +1,11 @@
 "use client";
 
+import NiceModal from "@ebay/nice-modal-react";
 import Color from "color";
-import { Loader2 } from "lucide-react";
+import { Loader2, RotateCcw } from "lucide-react";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { ConfirmationModal } from "@/components/confirmation-modal";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -308,12 +310,39 @@ export function OrganizationStyleCard(): React.JSX.Element {
 							)}
 						/>
 					</CardContent>
-					<CardFooter>
+					<CardFooter className="flex justify-between">
 						<Button type="submit" disabled={updateMutation.isPending}>
 							{updateMutation.isPending && (
 								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 							)}
 							Salva
+						</Button>
+						<Button
+							type="button"
+							variant="outline"
+							disabled={updateMutation.isPending}
+							onClick={() => {
+								NiceModal.show(ConfirmationModal, {
+									title: "Ripristina stile predefinito",
+									message:
+										"Tutti i colori personalizzati verranno rimossi e verrà applicato lo stile predefinito. Questa azione non è reversibile.",
+									confirmLabel: "Ripristina",
+									onConfirm: () => {
+										updateMutation.mutate({
+											auroraColorPrimary: null,
+											auroraColorSecondary: null,
+											headerBgColor: null,
+											headerTextColor: null,
+											buttonBgColor: null,
+											buttonTextColor: null,
+											tabBgColor: null,
+										});
+									},
+								});
+							}}
+						>
+							<RotateCcw className="mr-2 h-4 w-4" />
+							Ripristina default
 						</Button>
 					</CardFooter>
 				</Card>
