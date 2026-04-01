@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import type * as React from "react";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { LeadsTable } from "@/components/organization/leads-table";
 import {
 	Page,
@@ -32,7 +33,7 @@ export default async function LeadsPage(): Promise<React.JSX.Element> {
 	return (
 		<Page>
 			<PageHeader>
-				<PagePrimaryBar>
+				<PagePrimaryBar actions={<NotificationBell />}>
 					<PageBreadcrumb
 						segments={[
 							{ label: "Home", href: "/dashboard" },

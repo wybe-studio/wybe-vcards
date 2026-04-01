@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type * as React from "react";
 import { OrganizationsTable } from "@/components/admin/organizations/organizations-table";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import {
 	Page,
 	PageBody,
@@ -18,7 +19,7 @@ export default function AdminOrganizationsPage(): React.JSX.Element {
 	return (
 		<Page>
 			<PageHeader>
-				<PagePrimaryBar>
+				<PagePrimaryBar actions={<NotificationBell />}>
 					<PageBreadcrumb
 						segments={[
 							{ label: "Home", href: "/dashboard" },
