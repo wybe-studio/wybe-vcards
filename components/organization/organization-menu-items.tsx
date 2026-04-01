@@ -80,7 +80,11 @@ export function OrganizationMenuItems(): React.JSX.Element {
 					icon: LayoutDashboardIcon,
 					exactMatch: true,
 				},
-				{ label: "vCard", href: `${basePath}/vcards`, icon: IdCardIcon },
+				{
+					label: userIsAdmin ? "vCard" : "La mia vCard",
+					href: `${basePath}/vcards`,
+					icon: IdCardIcon,
+				},
 				...(userIsAdmin
 					? [
 							{
