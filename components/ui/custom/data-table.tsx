@@ -407,8 +407,9 @@ export function DataTable<TData>({
 			{enablePagination && (
 				<div className="flex items-center justify-between px-4">
 					<div className="hidden flex-1 text-muted-foreground text-sm lg:flex">
-						{table.getFilteredSelectedRowModel().rows.length} di {totalCount}{" "}
-						riga/righe selezionate.
+						{enableRowSelection
+							? `${table.getFilteredSelectedRowModel().rows.length} di ${totalCount} riga/righe selezionate.`
+							: `${totalCount} risultat${totalCount === 1 ? "o" : "i"} totali`}
 					</div>
 					<div className="flex w-full items-center gap-8 lg:w-fit">
 						{mounted && (
