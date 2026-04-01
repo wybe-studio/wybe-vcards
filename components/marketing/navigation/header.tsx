@@ -90,7 +90,7 @@ export function Header() {
 										Accedi
 									</Link>
 									<Link
-										href="/auth/sign-up"
+										href="/contatti"
 										className={cn(
 											"inline-flex shrink-0 items-center justify-center gap-1 rounded-full px-3 py-1 text-sm font-medium",
 											"bg-marketing-accent text-marketing-accent-fg hover:bg-marketing-accent-hover transition-colors",
@@ -149,7 +149,7 @@ export function Header() {
 											Accedi
 										</Link>
 										<Link
-											href="/auth/sign-up"
+											href="/contatti"
 											onClick={() => setMenuOpen(false)}
 											className="w-full rounded-full bg-marketing-accent py-4 text-center text-xl font-medium text-marketing-accent-fg transition-colors hover:bg-marketing-accent-hover"
 										>

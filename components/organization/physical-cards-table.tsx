@@ -302,7 +302,7 @@ export function PhysicalCardsTable(): React.JSX.Element {
 												NiceModal.show(ConfirmationModal, {
 													title: "Scollegare la card?",
 													message:
-														"La card tornera libera e potra essere riassegnata.",
+														"La card tornerà libera e potrà essere riassegnata.",
 													confirmLabel: "Scollega",
 													onConfirm: () =>
 														unassignMutation.mutate({ id: card.id }),

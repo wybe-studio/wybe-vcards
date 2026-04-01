@@ -87,7 +87,7 @@ export default function HomePage() {
 			"Crea il tuo account e inizia a gestire le vCard del tuo team.",
 		primaryCta: {
 			text: "Inizia ora",
-			href: "/auth/sign-up",
+			href: "/contatti",
 		},
 		secondaryCta: {
 			text: "Contattaci",

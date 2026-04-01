@@ -35,7 +35,7 @@ export function TwoFactorCard({
 
 	const isCredentialAccount =
 		hasCredentialAccount ??
-		accounts?.some((account) => account.providerId === "credential");
+		accounts?.some((account) => account.providerId === "email");
 
 	if (isCredentialAccount === false) {
 		return null;

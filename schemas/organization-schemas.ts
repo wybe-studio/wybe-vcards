@@ -38,7 +38,7 @@ export const updateOrganizationSchema = z.object({
 // Invite member form
 export const inviteMemberSchema = z.object({
 	email: z.string().email(),
-	role: z.enum(["member", "owner", "admin"]),
+	role: z.enum(["member", "admin"]),
 });
 
 // Create organization form

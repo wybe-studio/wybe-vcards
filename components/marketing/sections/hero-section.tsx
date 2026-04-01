@@ -55,7 +55,7 @@ export function HeroSection() {
 						{/* CTA Buttons */}
 						<div className="flex items-center gap-4">
 							<Link
-								href="/auth/sign-up"
+								href="/contatti"
 								className={cn(
 									"inline-flex shrink-0 items-center justify-center gap-1 rounded-full px-4 py-2 text-sm font-medium",
 									"bg-marketing-accent text-marketing-accent-fg hover:bg-marketing-accent-hover",

@@ -39,6 +39,29 @@ export function ChangePasswordCard(): React.JSX.Element {
 
 	const onSubmit = methods.handleSubmit(async (values) => {
 		const supabase = createClient();
+
+		// Verify current password before allowing change
+		const {
+			data: { user },
+		} = await supabase.auth.getUser();
+
+		if (!user?.email) {
+			toast.error("Impossibile verificare l'utente");
+			return;
+		}
+
+		const { error: signInError } = await supabase.auth.signInWithPassword({
+			email: user.email,
+			password: values.currentPassword,
+		});
+
+		if (signInError) {
+			methods.setError("currentPassword", {
+				message: "La password attuale non è corretta",
+			});
+			return;
+		}
+
 		const { error } = await supabase.auth.updateUser({
 			password: values.newPassword,
 		});

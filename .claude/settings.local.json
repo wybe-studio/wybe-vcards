@@ -131,7 +131,18 @@
 			"Read(//d D:/Github/**)",
 			"Bash(cat \"/d/Github/wybe-vcards/app/\\(marketing\\)/page.tsx\")",
 			"Bash(grep -r \"lucide-react\" /d/Github/wybe-vcards/components/ui/*.tsx)",
-			"Bash(cat /d/Github/wybe-vcards/app/\\\\\\(marketing\\\\\\)/providers.tsx)"
+			"Bash(cat /d/Github/wybe-vcards/app/\\\\\\(marketing\\\\\\)/providers.tsx)",
+			"Bash(find /d/Github/wybe-vcards -type f -path *dashboard/organization*)",
+			"Bash(ls -la /d/Github/wybe-vcards/app/\\\\\\(saas\\\\\\)/dashboard/)",
+			"Bash(ls -la /d/Github/wybe-vcards/app/\\\\\\(saas\\\\\\)/dashboard/\\\\\\(sidebar\\\\\\)/organization/vcards/)",
+			"Bash(grep -r \"VcardStatus\\\\|vcard_status\" /d/Github/wybe-vcards/lib -n --include=*.ts)",
+			"Bash(ls -la \"/d/Github/wybe-vcards/app/\\(saas\\)/dashboard/\")",
+			"Bash(grep -r style /d/Github/wybe-vcards/schemas --include=*.ts --include=*.tsx)",
+			"Bash(find /d/Github/wybe-vcards/supabase -type f -name *organization*)",
+			"Bash(find /d/Github/wybe-vcards/supabase -type f -name *.sql)",
+			"Bash(grep -A 50 \"create table.*organization_style\" /d/Github/wybe-vcards/supabase/schemas/*.sql)",
+			"Bash(npx @biomejs/biome lint components/organization/member-vcard-editor.tsx app/\\\\\\(saas\\\\\\)/dashboard/\\\\\\(sidebar\\\\\\)/organization/vcards/page.tsx components/organization/organization-menu-items.tsx)",
+			"Bash(npx @biomejs/biome lint components/organization/member-vcard-editor.tsx)"
 		],
 		"additionalDirectories": [
 			"d:\\Github\\wybe-kit-next-supabase\\.claude\\skills\\postgres-expert",
