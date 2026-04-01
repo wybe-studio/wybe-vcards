@@ -254,13 +254,14 @@ export default async function proxy(req: NextRequest) {
 	if (pathname.startsWith("/auth")) {
 		const { user, response } = await updateSession(req);
 
-		// Allow confirm, callback, reset-password and banned pages even when logged in
+		// Allow confirm, callback, reset-password, verify and banned pages even when logged in
 		if (
 			user &&
 			pathname !== "/auth/banned" &&
 			pathname !== "/auth/callback" &&
 			pathname !== "/auth/confirm" &&
-			pathname !== "/auth/reset-password"
+			pathname !== "/auth/reset-password" &&
+			pathname !== "/auth/verify"
 		) {
 			// If user is logged in and has an invitation, redirect to invitation page
 			const invitationId = req.nextUrl.searchParams.get("invitationId");
