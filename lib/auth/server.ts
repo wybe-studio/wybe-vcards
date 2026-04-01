@@ -105,28 +105,6 @@ export const assertUserIsOrgMember = cache(
 );
 
 /**
- * Get active sessions for the current user.
- * Supabase doesn't expose session listing like Better Auth did.
- * Returns the current session as the only active session.
- */
-export const getActiveSessions = cache(async () => {
-	const user = await getUser();
-	if (!user) return [];
-
-	return [
-		{
-			id: user.sessionId ?? "",
-			userId: user.id,
-			token: "",
-			userAgent: "",
-			ipAddress: "",
-			createdAt: new Date(),
-			expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-		},
-	];
-});
-
-/**
  * Get linked accounts for the current user.
  * Returns identity providers linked to the Supabase user.
  */

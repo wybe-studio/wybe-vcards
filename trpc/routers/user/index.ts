@@ -1,9 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import {
-	getActiveSessions,
-	getSession,
-	getUserAccounts,
-} from "@/lib/auth/server";
+import { getSession, getUserAccounts } from "@/lib/auth/server";
 import { logger } from "@/lib/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
@@ -14,9 +10,6 @@ import {
 
 export const userRouter = createTRPCRouter({
 	getSession: publicProcedure.query(async () => await getSession()),
-	getActiveSessions: protectedProcedure.query(
-		async () => await getActiveSessions(),
-	),
 	getAccounts: protectedProcedure.query(async () => await getUserAccounts()),
 
 	deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
