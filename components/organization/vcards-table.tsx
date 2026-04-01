@@ -128,6 +128,28 @@ export function VcardsTable(): React.JSX.Element {
 			.withOptions({ shallow: true }),
 	);
 
+	const { data: orgData } = trpc.organization.get.useQuery(
+		{ id: organization?.id ?? "" },
+		{ enabled: !!organization?.id },
+	);
+
+	const membersMap = React.useMemo(() => {
+		const map = new Map<
+			string,
+			{ name: string; email: string; image?: string | null }
+		>();
+		for (const m of orgData?.members ?? []) {
+			if (m.user) {
+				map.set(m.user_id, {
+					name: m.user.name,
+					email: m.user.email,
+					image: m.user.image,
+				});
+			}
+		}
+		return map;
+	}, [orgData?.members]);
+
 	const utils = trpc.useUtils();
 
 	const columnFilters: ColumnFiltersState = React.useMemo(() => {
@@ -205,7 +227,11 @@ export function VcardsTable(): React.JSX.Element {
 				const fullName = `${row.original.first_name} ${row.original.last_name}`;
 				return (
 					<div className="flex max-w-[200px] items-center gap-2">
-						<UserAvatar className="size-6 shrink-0" name={fullName} />
+						<UserAvatar
+							className="size-6 shrink-0"
+							name={fullName}
+							src={row.original.profile_image}
+						/>
 						<span
 							className="truncate font-medium text-foreground"
 							title={fullName}
@@ -241,6 +267,31 @@ export function VcardsTable(): React.JSX.Element {
 					{row.original.job_title || "-"}
 				</span>
 			),
+		},
+		{
+			accessorKey: "user_id",
+			header: "Membro",
+			enableSorting: false,
+			cell: ({ row }) => {
+				const member = row.original.user_id
+					? membersMap.get(row.original.user_id)
+					: null;
+				if (!member) {
+					return <span className="text-muted-foreground">—</span>;
+				}
+				return (
+					<div className="flex max-w-45 items-center gap-2">
+						<UserAvatar
+							className="size-5 shrink-0"
+							name={member.name}
+							src={member.image}
+						/>
+						<span className="truncate text-foreground/80" title={member.name}>
+							{member.name}
+						</span>
+					</div>
+				);
+			},
 		},
 		{
 			accessorKey: "physical_card",
