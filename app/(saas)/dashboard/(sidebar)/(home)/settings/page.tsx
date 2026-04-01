@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default async function AccountSettingsPage(): Promise<React.JSX.Element> {
 	const userAccounts = await trpc.user.getAccounts();
 	const userHasPassword = userAccounts?.some(
-		(account) => account.providerId === "credential",
+		(account) => account.providerId === "email",
 	);
 	return (
 		<Page>
