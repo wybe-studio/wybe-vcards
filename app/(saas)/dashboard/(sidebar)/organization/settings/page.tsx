@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import type * as React from "react";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { OrganizationSettingsTabs } from "@/components/organization/organization-settings-tabs";
 import {
 	Page,
@@ -37,7 +38,7 @@ export default async function OrganizationSettingsPage(): Promise<React.JSX.Elem
 	return (
 		<Page>
 			<PageHeader>
-				<PagePrimaryBar>
+				<PagePrimaryBar actions={<NotificationBell />}>
 					<PageBreadcrumb
 						segments={[
 							{ label: "Home", href: "/dashboard" },

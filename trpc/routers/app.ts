@@ -4,6 +4,7 @@ import { createTRPCRouter } from "@/trpc/init";
 export const appRouter = createTRPCRouter({
 	admin: lazy(() => import("./admin")),
 	contact: lazy(() => import("./contact")),
+	notification: lazy(() => import("./notification-router")),
 	organization: lazy(() => import("./organization")),
 	user: lazy(() => import("./user")),
 });

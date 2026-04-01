@@ -117,7 +117,18 @@
 			"Bash(cp \"C:/Users/user/Downloads/favicon_io/favicon-16x16.png\" \"d:/Github/wybe-vcards/public/favicon-16x16.png\")",
 			"Bash(find /d/Github/wybe-vcards -name next.config* -o -name robots.config*)",
 			"Bash(grep -r \"CookieBanner\\\\|Footer\" /d/Github/wybe-vcards/app --include=*.tsx --include=*.ts)",
-			"WebFetch(domain:www.wybe.it)"
+			"WebFetch(domain:www.wybe.it)",
+			"Bash(find /d/Github/wybe-vcards -type f -name *vcard*)",
+			"Bash(find /d/Github/wybe-vcards/app -type f -name *vcard*)",
+			"Bash(find /d/Github/wybe-vcards/components -type f -name *vcard*)",
+			"Bash(find /d/Github/wybe-vcards/app -type f -path *dashboard*organization*vcard*)",
+			"Bash(find /d/Github/wybe-vcards/app -type f -name *settings*)",
+			"Bash(find /d/Github/wybe-vcards/components -type f -name *settings*)",
+			"Bash(find /d/Github/wybe-vcards -path *trpc*routers* -type f)",
+			"Bash(grep -r AccountSettingsTabs --include=*.tsx --include=*.ts)",
+			"Bash(grep -r \"isAdmin\\\\|isOrganizationAdmin\\\\|role\" /d/Github/wybe-vcards/lib/auth --include=*.ts --include=*.tsx)",
+			"Bash(./node_modules/.bin/tsc --noEmit)",
+			"Read(//d D:/Github/**)"
 		],
 		"additionalDirectories": [
 			"d:\\Github\\wybe-kit-next-supabase\\.claude\\skills\\postgres-expert",

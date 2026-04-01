@@ -19,6 +19,7 @@ import {
 import { FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { appConfig } from "@/config/app.config";
 import { useEnhancedModal } from "@/hooks/use-enhanced-modal";
 import { useSession } from "@/hooks/use-session";
 import { createClient } from "@/lib/supabase/client";
@@ -68,6 +69,8 @@ export const TwoFactorModal = NiceModal.create<TwoFactorModalProps>(() => {
 			// Enroll a new TOTP factor
 			const { data, error } = await supabase.auth.mfa.enroll({
 				factorType: "totp",
+				issuer: appConfig.appName,
+				friendlyName: user?.email ?? undefined,
 			});
 
 			if (error) {

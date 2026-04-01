@@ -4,11 +4,11 @@ Il progetto usa due progetti Supabase separati per staging e produzione.
 
 ## Progetti
 
-| Ambiente    | Project Ref                | Utilizzo                          |
-| ----------- | -------------------------- | --------------------------------- |
-| **Locale**  | -                          | `npm run db:start` (Docker)       |
-| **Staging** | `bwgfqckcsxrgcdfdveuv`     | Preview deploy (Vercel)           |
-| **Prod**    | `bidqxqljyvtnemhjxpbb`     | Production deploy (Vercel)        |
+| Ambiente    | Project Ref            | Utilizzo                    |
+| ----------- | ---------------------- | --------------------------- |
+| **Locale**  | -                      | `npm run db:start` (Docker) |
+| **Staging** | `bwgfqckcsxrgcdfdveuv` | Preview deploy (Vercel)     |
+| **Prod**    | `bidqxqljyvtnemhjxpbb` | Production deploy (Vercel)  |
 
 ## Prerequisiti
 
@@ -59,11 +59,11 @@ npm run db:typegen:remote  # Genera tipi TS dal progetto linkato
 
 Su **Vercel → Settings → Environment Variables**, configura per ogni ambiente:
 
-| Variabile                              | Production        | Preview (staging) |
-| -------------------------------------- | ----------------- | ----------------- |
+| Variabile                              | Production        | Preview (staging)    |
+| -------------------------------------- | ----------------- | -------------------- |
 | `NEXT_PUBLIC_SUPABASE_URL`             | URL progetto prod | URL progetto staging |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Chiave prod       | Chiave staging    |
-| `SUPABASE_SERVICE_ROLE_KEY`            | Chiave prod       | Chiave staging    |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Chiave prod       | Chiave staging       |
+| `SUPABASE_SERVICE_ROLE_KEY`            | Chiave prod       | Chiave staging       |
 
 Le chiavi si trovano su: **Supabase Dashboard → Project Settings → API**
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type * as React from "react";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import {
 	Page,
 	PageBody,
@@ -23,7 +24,7 @@ export default async function AccountSettingsPage(): Promise<React.JSX.Element> 
 	return (
 		<Page>
 			<PageHeader>
-				<PagePrimaryBar>
+				<PagePrimaryBar actions={<NotificationBell />}>
 					<PageBreadcrumb
 						segments={[
 							{ label: "Home", href: "/dashboard" },

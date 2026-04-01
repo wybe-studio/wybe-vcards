@@ -41,10 +41,13 @@ function PageHeader({
 }
 
 export type PagePrimaryBarElement = HTMLDivElement;
-export type PagePrimaryBarProps = React.ComponentProps<"div">;
+export type PagePrimaryBarProps = React.ComponentProps<"div"> & {
+	actions?: React.ReactNode;
+};
 function PagePrimaryBar({
 	className,
 	children,
+	actions,
 	...other
 }: PagePrimaryBarProps): React.JSX.Element {
 	return (
@@ -59,6 +62,7 @@ function PagePrimaryBar({
 			<Separator className="mr-2 h-4!" orientation="vertical" />
 			<div className="flex w-full flex-row items-center justify-between">
 				{children}
+				{actions && <div className="flex items-center gap-2">{actions}</div>}
 			</div>
 		</div>
 	);

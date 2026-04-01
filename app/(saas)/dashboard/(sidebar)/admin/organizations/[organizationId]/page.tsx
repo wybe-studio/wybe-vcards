@@ -6,6 +6,7 @@ import { parseAsStringLiteral, useQueryState } from "nuqs";
 import { OrgLimitsCard } from "@/components/admin/organizations/org-limits-card";
 import { OrgPhysicalCardsTab } from "@/components/admin/organizations/org-physical-cards-tab";
 import { OrgVcardsTab } from "@/components/admin/organizations/org-vcards-tab";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import {
 	Page,
 	PageBody,
@@ -71,7 +72,7 @@ export default function AdminOrganizationDetailPage() {
 	return (
 		<Page>
 			<PageHeader>
-				<PagePrimaryBar>
+				<PagePrimaryBar actions={<NotificationBell />}>
 					<PageBreadcrumb
 						segments={[
 							{ label: "Home", href: "/dashboard" },

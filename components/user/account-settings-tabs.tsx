@@ -8,7 +8,6 @@ import {
 	UnderlinedTabsList,
 	UnderlinedTabsTrigger,
 } from "@/components/ui/custom/underlined-tabs";
-import { ActiveSessionsCard } from "@/components/user/active-sessions-card";
 import { ChangeEmailCard } from "@/components/user/change-email-card";
 import { ChangeNameCard } from "@/components/user/change-name-card";
 import { ChangePasswordCard } from "@/components/user/change-password-card";
@@ -19,7 +18,7 @@ import { TwoFactorCard } from "@/components/user/two-factor-card";
 import { UserAvatarCard } from "@/components/user/user-avatar-card";
 import { authConfig } from "@/config/auth.config";
 
-const tabValues = ["profile", "security", "sessions"] as const;
+const tabValues = ["profile", "security"] as const;
 type TabValue = (typeof tabValues)[number];
 
 type AccountSettingsTabsProps = {
@@ -45,7 +44,6 @@ export function AccountSettingsTabs({
 				<UnderlinedTabsTrigger value="security">
 					Sicurezza
 				</UnderlinedTabsTrigger>
-				<UnderlinedTabsTrigger value="sessions">Sessioni</UnderlinedTabsTrigger>
 			</UnderlinedTabsList>
 			<UnderlinedTabsContent value="profile">
 				<div className="space-y-4">
@@ -60,11 +58,6 @@ export function AccountSettingsTabs({
 					{userHasPassword ? <ChangePasswordCard /> : <SetPasswordCard />}
 					<TwoFactorCard hasCredentialAccount={userHasPassword} />
 					{authConfig.enableSocialLogin && <ConnectedAccountsCard />}
-				</div>
-			</UnderlinedTabsContent>
-			<UnderlinedTabsContent value="sessions">
-				<div className="space-y-4">
-					<ActiveSessionsCard />
 				</div>
 			</UnderlinedTabsContent>
 		</UnderlinedTabs>

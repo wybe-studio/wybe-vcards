@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type * as React from "react";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { OrganizationsGrid } from "@/components/organization/organizations-grid";
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function AccountPage(): React.JSX.Element {
 	return (
 		<Page>
 			<PageHeader>
-				<PagePrimaryBar>
+				<PagePrimaryBar actions={<NotificationBell />}>
 					<PageBreadcrumb segments={[{ label: "Home" }]} />
 				</PagePrimaryBar>
 			</PageHeader>

@@ -17,6 +17,7 @@ import { InputPassword } from "@/components/ui/custom/input-password";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { appConfig } from "@/config/app.config";
 import { useSession } from "@/hooks/use-session";
 import { createClient } from "@/lib/supabase/client";
 
@@ -64,6 +65,8 @@ export function Setup2faCard(): React.JSX.Element {
 			// Enroll TOTP
 			const { data, error: enrollError } = await supabase.auth.mfa.enroll({
 				factorType: "totp",
+				issuer: appConfig.appName,
+				friendlyName: user?.email ?? undefined,
 			});
 
 			if (enrollError || !data) {
