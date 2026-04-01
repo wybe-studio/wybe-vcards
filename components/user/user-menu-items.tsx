@@ -1,11 +1,6 @@
 "use client";
 
-import {
-	HomeIcon,
-	MonitorSmartphoneIcon,
-	ShieldIcon,
-	UserIcon,
-} from "lucide-react";
+import { HomeIcon, ShieldIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import * as React from "react";
@@ -60,11 +55,6 @@ export function UserMenuItems(): React.JSX.Element {
 					label: "Sicurezza",
 					href: "/dashboard/settings?tab=security",
 					icon: ShieldIcon,
-				},
-				{
-					label: "Sessioni",
-					href: "/dashboard/settings?tab=sessions",
-					icon: MonitorSmartphoneIcon,
 				},
 			],
 		},

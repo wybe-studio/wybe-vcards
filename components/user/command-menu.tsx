@@ -6,7 +6,6 @@ import {
 	CreditCardIcon,
 	HomeIcon,
 	LayoutDashboardIcon,
-	MonitorSmartphoneIcon,
 	SettingsIcon,
 	ShieldIcon,
 	UserIcon,
@@ -46,11 +45,6 @@ const userNavItems: NavItem[] = [
 		title: "Sicurezza",
 		href: "/dashboard/settings?tab=security",
 		icon: ShieldIcon,
-	},
-	{
-		title: "Sessioni",
-		href: "/dashboard/settings?tab=sessions",
-		icon: MonitorSmartphoneIcon,
 	},
 ];
 
