@@ -145,9 +145,9 @@ export default async function PublicVcardPage({ params }: Props) {
 	};
 
 	return (
-		<div className="relative grid h-full min-h-svh w-full grid-cols-1">
+		<div className="relative grid h-svh w-full grid-cols-1 overflow-hidden overscroll-none">
 			<VcardBackground theme={theme} />
-			<div className="z-10 mx-auto flex w-full max-w-md flex-col overflow-hidden bg-white shadow-2xl md:my-8 md:rounded-2xl 2xl:my-14">
+			<div className="z-10 mx-auto flex h-full w-full max-w-md flex-col overflow-hidden bg-white shadow-2xl md:my-8 md:max-h-[calc(100svh-64px)] md:rounded-2xl 2xl:my-14 2xl:max-h-[calc(100svh-112px)]">
 				<VcardHead data={publicData} />
 				<VcardBody data={publicData} />
 				<VcardFooter />

@@ -128,9 +128,9 @@ export function VcardBody({ data }: VcardBodyProps) {
 	].filter((item) => item.value) as VcardListItem[];
 
 	return (
-		<Tabs defaultValue="contacts" className="w-full">
+		<Tabs defaultValue="contacts" className="flex min-h-0 flex-1 flex-col">
 			<TabsList
-				className="flex w-full justify-center rounded-none pb-0"
+				className="flex w-full shrink-0 justify-center rounded-none pb-0"
 				style={{ backgroundColor: theme.lightColor }}
 			>
 				<TabsTrigger
@@ -146,7 +146,7 @@ export function VcardBody({ data }: VcardBodyProps) {
 					Azienda
 				</TabsTrigger>
 			</TabsList>
-			<ScrollArea className="relative z-0 h-[calc(100svh-300px-50px-44px)] w-full md:h-[calc(100svh-360px-50px-44px-64px)] 2xl:h-[calc(100svh-360px-50px-44px-112px)]">
+			<ScrollArea className="relative z-0 min-h-0 flex-1 overscroll-contain">
 				<TabsContent value="contacts">
 					<VcardList items={contactData} iconColor={theme.mainColor} />
 				</TabsContent>
