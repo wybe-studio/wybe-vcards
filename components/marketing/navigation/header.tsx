@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
 	{ title: "Funzionalità", href: "/#features" },
 	{ title: "FAQ", href: "/#faq" },
-	{ title: "Contatti", href: "/contact" },
+	{ title: "Contatti", href: "/contatti" },
 ];
 
 export function Header() {

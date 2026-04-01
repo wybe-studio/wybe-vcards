@@ -91,7 +91,7 @@ export default function HomePage() {
 		},
 		secondaryCta: {
 			text: "Contattaci",
-			href: "/contact",
+			href: "/contatti",
 		},
 	};
 

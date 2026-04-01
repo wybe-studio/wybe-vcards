@@ -8,9 +8,9 @@ export const appConfig = {
 	// Contact information (displayed on contact page)
 	contact: {
 		enabled: true,
-		email: "hello@yourdomain.com",
-		phone: "(123) 456-7890",
-		address: "123 Main St, San Francisco, CA",
+		email: "info@wybestudio.it",
+		phone: "+39 320 2819893",
+		address: "Via Fratelli Sebatiani, 121 - Rieti",
 	},
 	// Site sections - enable/disable major parts of the site
 	site: {

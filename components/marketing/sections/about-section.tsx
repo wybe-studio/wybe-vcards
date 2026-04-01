@@ -188,7 +188,7 @@ export function AboutSection() {
 							Inizia la prova gratuita
 						</Link>
 						<Link
-							href="/contact"
+							href="/contatti"
 							className={cn(
 								"group inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium",
 								"text-marketing-fg hover:bg-marketing-card-hover",

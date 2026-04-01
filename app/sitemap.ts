@@ -33,7 +33,7 @@ export default async function Sitemap(): Promise<SitemapEntry[]> {
 			changeFreq: "weekly",
 		},
 		{
-			url: `${baseUrl}/contact`,
+			url: `${baseUrl}/contatti`,
 			lastModified: new Date(),
 			priority: 0.7,
 			changeFreq: "monthly",

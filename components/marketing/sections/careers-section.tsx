@@ -167,7 +167,7 @@ export function CareersPositionsSection() {
 								</div>
 								<div className="shrink-0">
 									<Link
-										href="/contact"
+										href="/contatti"
 										className={cn(
 											"inline-flex shrink-0 items-center justify-center gap-1 rounded-full px-4 py-2 text-sm font-medium",
 											"bg-marketing-card-hover text-marketing-fg hover:bg-marketing-accent/15",
@@ -207,7 +207,7 @@ export function CareersPositionsSection() {
 					</div>
 					<div className="flex items-center gap-4">
 						<Link
-							href="/contact"
+							href="/contatti"
 							className={cn(
 								"inline-flex shrink-0 items-center justify-center gap-1 rounded-full px-4 py-2 text-sm font-medium",
 								"bg-marketing-accent text-white hover:bg-marketing-accent-hover",

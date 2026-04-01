@@ -48,7 +48,7 @@ const ctaContent = {
 	},
 	secondaryCta: {
 		text: "Prenota una demo",
-		href: "/contact",
+		href: "/contatti",
 	},
 };
 

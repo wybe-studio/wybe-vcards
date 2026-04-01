@@ -16,7 +16,7 @@ const footerLinks = [
 		group: "Azienda",
 		items: [
 			...(appConfig.contact.enabled
-				? [{ title: "Contatti", href: "/contact" }]
+				? [{ title: "Contatti", href: "/contatti" }]
 				: []),
 		],
 	},
