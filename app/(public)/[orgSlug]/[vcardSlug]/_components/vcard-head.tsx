@@ -18,11 +18,22 @@ interface VcardHeadProps {
 	data: VcardPublicData;
 }
 
+function isIOS(): boolean {
+	if (typeof navigator === "undefined") return false;
+	return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
 export function VcardHead({ data }: VcardHeadProps) {
 	const currentURL = typeof window !== "undefined" ? window.location.href : "";
 	const { theme } = data;
 
 	const vcardString = getVCardString(data);
+	// iOS non interpreta vCard inline nei QR code — usiamo sempre l'URL
+	const qrValue = isIOS()
+		? currentURL
+		: vcardString.length < 3000
+			? vcardString
+			: currentURL;
 
 	return (
 		<>
@@ -62,11 +73,7 @@ export function VcardHead({ data }: VcardHeadProps) {
 									</DialogDescription>
 								</DialogHeader>
 								<div className="flex items-center justify-center">
-									<QRCodeSVG
-										value={vcardString.length < 3000 ? vcardString : currentURL}
-										size={256}
-										level="L"
-									/>
+									<QRCodeSVG value={qrValue} size={256} level="L" />
 								</div>
 							</DialogContent>
 						</Dialog>
